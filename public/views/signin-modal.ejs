@@ -1,0 +1,44 @@
+<!-- signin modal -->
+<div class="modal fade signin-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="mySmallModalLabel">Choose method</h4>
+            </div>
+            <div class="modal-body">
+                <% if(facebook) { %>
+                <a href="<%- url %>/auth/facebook" class="btn btn-lg btn-block btn-social btn-facebook">
+                    <i class="fa fa-facebook"></i> Sign in via Facebook
+                </a>
+                <% } %>
+                <% if(twitter) { %>
+                <a href="<%- url %>/auth/twitter" class="btn btn-lg btn-block btn-social btn-twitter">
+                    <i class="fa fa-twitter"></i> Sign in via Twitter
+                </a>
+                <% } %>
+                <% if(github) { %>
+                <a href="<%- url %>/auth/github" class="btn btn-lg btn-block btn-social btn-github">
+                    <i class="fa fa-github"></i> Sign in via GitHub
+                </a>
+                <% } %>
+                <% if(gitlab) { %>
+                <a href="<%- url %>/auth/gitlab" class="btn btn-lg btn-block btn-social btn-soundcloud">
+                    <i class="fa fa-gitlab"></i> Sign in via GitLab
+                </a>
+                <% } %>
+                <% if(dropbox) { %>
+                <a href="<%- url %>/auth/dropbox" class="btn btn-lg btn-block btn-social btn-dropbox">
+                    <i class="fa fa-dropbox"></i> Sign in via Dropbox
+                </a>
+                <% } %>
+                <% if(google) { %>
+                <a href="<%- url %>/auth/google" class="btn btn-lg btn-block btn-social btn-google">
+                    <i class="fa fa-google"></i> Sign in via Google
+                </a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

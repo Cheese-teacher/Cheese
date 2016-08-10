@@ -1,0 +1,1 @@
+cleancss -o html.min.css github-extract.css markdown.css extra.css slide-preview.css site.css

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <% if(typeof robots !== 'undefined' && robots) { %>
+    <meta name="robots" content="<%- robots %>">
+    <% } %>
+    <% if(typeof description !== 'undefined' && description) { %>
+    <meta name="description" content="<%- description %>">
+    <% } %>
+    <title><%- title %></title>
+    <link rel="icon" type="image/png" href="<%- url %>/favicon.png">
+	<link rel="apple-touch-icon" href="<%- url %>/apple-touch-icon.png">
+	<% if(useCDN) { %>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css">
+	<% } else { %>
+	<link rel="stylesheet" href='<%- url %>/vendor/bootstrap/dist/css/bootstrap.min.css'>
+    <link rel="stylesheet" href='<%- url %>/vendor/font-awesome/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="<%- url %>/vendor/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="<%- url %>/vendor/octicons/octicons/octicons.css">
+	<% } %>
+    <link rel="stylesheet" href='<%- url %>/css/github-extract.css'>
+    <link rel="stylesheet" href='<%- url %>/css/gist.css'>
+    <link rel="stylesheet" href='<%- url %>/vendor/highlightjs/styles/github-gist.css'>
+    <link rel="stylesheet" href="<%- url %>/css/mermaid.css">
+    <link rel="stylesheet" href='<%- url %>/css/markdown.css'>
+    <link rel="stylesheet" href='<%- url %>/vendor/emojify/css/emojify.min.css'>
+    <link rel="stylesheet" href='<%- url %>/css/extra.css'>
+    <link rel="stylesheet" href="<%- url %>/css/slide-preview.css">
+    <link rel="stylesheet" href='<%- url %>/css/site.css'>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
+	<![endif]-->
+</head>
+
+<body style="display:none;">
+    <div class="ui-infobar container-fluid unselectable hidden-print">
+        <small>
+            <span>
+                <% if(lastchangeuserprofile) { %>
+                    <span class="ui-lastchangeuser">&thinsp;<i class="ui-user-icon small" style="background-image: url(<%- lastchangeuserprofile.photo %>);" data-toggle="tooltip" data-placement="right" title="<%- lastchangeuserprofile.name %>"></i></span>
+                <% } else { %>
+                	<span class="ui-no-lastchangeuser">&thinsp;<i class="fa fa-clock-o"></i></span>
+                <% } %>
+                &nbsp;<span class="text-uppercase ui-status-lastchange"></span>
+                <span class="ui-lastchange text-uppercase" data-createtime="<%- createtime %>" data-updatetime="<%- updatetime %>"></span>
+            </span>
+            <span class="pull-right"><%- viewcount %> views <a href="#" class="ui-edit" title="Edit this note"><i class="fa fa-fw fa-pencil"></i></a></span>
+        </small>
+    </div>
+    <div id="doc" class="container markdown-body"><%- body %></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+            </ul>
+        </div>
+    </div>
+    <div id="toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="display:none;"></div>
+</body>
+
+</html>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ messageStyle: "none", skipStartupTypeset: true ,tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true }});
+</script>
+<% if(useCDN) { %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.6.1/js-yaml.min.js" defer></script>
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/6.0.0/mermaid.min.js" defer></script>
+<% } else { %>
+<script src="<%- url %>/vendor/jquery/dist/jquery.min.js"></script>
+<script src="<%- url %>/vendor/bootstrap/dist/js/bootstrap.min.js" defer></script>
+<script src="<%- url %>/vendor/js-yaml/dist/js-yaml.min.js" defer></script>
+<script type="text/javascript" src="<%- url %>/vendor/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+<script src="<%- url %>/vendor/moment/min/moment-with-locales.js" defer></script>
+<script src="<%- url %>/vendor/mermaid/dist/mermaid.min.js" defer></script>
+<% } %>
+<script src="<%- url %>/vendor/lz-string/libs/lz-string.min.js" defer></script>
+<script src="<%- url %>/vendor/xss/dist/xss.min.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it/dist/markdown-it.min.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it-abbr/dist/markdown-it-abbr.min.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it-footnote/dist/markdown-it-footnote.min.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it-deflist/dist/markdown-it-deflist.min.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it-mark/dist/markdown-it-mark.min.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it-ins/dist/markdown-it-ins.min.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it-sub/dist/markdown-it-sub.min.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it-sup/dist/markdown-it-sup.min.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it-container/dist/markdown-it-container.min.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it-mathjax.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it-regexp.js" defer></script>
+<script src="<%- url %>/vendor/markdown-it-imsize.js" defer></script>
+<script src="<%- url %>/vendor/gist-embed/gist-embed.min.js" defer></script>
+<script src="<%- url %>/vendor/string/dist/string.min.js" defer></script>
+<script src="<%- url %>/vendor/highlightjs/highlight.pack.min.js" defer></script>
+<script src="<%- url %>/vendor/js-cookie/src/js.cookie.js" defer></script>
+<script src="<%- url %>/vendor/emojify/js/emojify.min.js" defer></script>
+<script src="<%- url %>/vendor/raphael/raphael.min.js" defer></script>
+<script src="<%- url %>/vendor/lodash/dist/lodash.min.js" defer></script>
+<script src="<%- url %>/vendor/sequence-diagrams/sequence-diagram-min.js" defer></script>
+<script src="<%- url %>/vendor/flowchart/release/flowchart.min.js" defer></script>
+<script src="<%- url %>/vendor/viz.js/viz.js" defer></script>
+<script src="<%- url %>/vendor/pdfobject/pdfobject.min.js" defer></script>
+<script src="<%- url %>/vendor/md-toc.js" defer></script>
+<script src="<%- url %>/js/common.js" defer></script>
+<script src="<%- url %>/js/extra.js" defer></script>
+<script src="<%- url %>/js/render.js" defer></script>
+<script src="<%- url %>/js/reveal-markdown.js" defer></script>
+<script src="<%- url %>/js/pretty.js" defer></script>
+
+<%- include ga %>

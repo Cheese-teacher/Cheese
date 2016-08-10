@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, user-scalable=yes"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
+    <!--fancyBox js-->
+    <link rel="stylesheet" href="javascripts/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="javascripts/fancybox/jquery.fancybox.js"></script>
+
+    <!--fancyBox js-->
+    
+    <script src='socket.io/socket.io.js'></script>
+    <script src="javascripts/main.js"></script>
+    <!--JQUERY MOBILE-->
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<!--JQUERY MOBILE-->
+	<script>
+		$(function(){
+			$('#pre-test-upload-tmp').click(function(){//改變FILE BUTTON 外觀
+				alert("CLICK");
+				$('#pre-test-upload').click();
+			});
+		});
+
+	</script>
+</head>
+<body>
+<div data-role="page">
+<div data-role="header">
+	<h1>HEADER</h1>
+	<h1>MOBILE PAGE</H1>
+	<h1 id="onlinepeople"></h1>
+</div>
+<div class="ui-content">
+	<h1>ui-content</h1>
+    <div id="img_zoom" style="display:none;float:left; position:absolute;width:70%;height:75%;"><img id='img_zoom2'></img></div>
+    <input type="text" id="name">
+    <input type="text" id="text">
+    <input type="button" id="sendtext" value="文字上傳" data-inline="true"  data-theme="z">
+    <!--考古題-->
+    <input type="button" id="pre-test-upload-tmp"  data-inline="true" value="考古題上傳" data-inline="true">
+    <input type="file" value="考古題上傳"  id="pre-test-upload"  multiple="multiple" style="display:none;">
+	<!--考古題--> 
+    <!--<form action="/upload" method="post" enctype="multipart/form-data">-->
+	<input type="file" value="圖片上傳" id="file_test" name="uploadfile" multiple="multiple" data-inline="true">
+
+	<!--</form>-->
+    <div id ="pre-test-upload-show" style=";border:5px solid red ;display:none"></div>
+    <div id="divshow"  style="width:600px;background-color:white; border: 5px solid grey;"></div>
+</div>
+<div data-role="footer">
+	
+</div>
+</div>
+</body>
+</html>
