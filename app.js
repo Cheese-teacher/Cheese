@@ -103,8 +103,8 @@ app.use(helmet.hsts({
     includeSubdomains: true,
     preload: true
 }));
-//toron
-var io2=require('socket.io').listen(server);
+//toron 
+var io2 = io;
 
 io2.sockets.on('connect',function(socket){
     onlineCount++;
