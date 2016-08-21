@@ -9,6 +9,12 @@ var num=0;
 
 router.get('/', function(req, res, next) {
     res.render('./views/index2', { title: '聊天室' });
+    console.log("SESSION");
+   	var a = req.session;
+   	for(te in a ){
+   	console.log(te);	
+   	}
+    
 });
 
 
