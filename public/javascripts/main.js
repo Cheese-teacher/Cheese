@@ -30,7 +30,7 @@ function upload(num) {
 
 }
 $(function () {
-    //文字傳送1.0-----------------------------------------
+//文字傳送---------------------------------------
     var socket = io.connect();
     var filelist = "";
 
@@ -96,7 +96,7 @@ $(function () {
         $("#onlinepeople").html("現在人數" + data.number);
     });
 
-    //文字傳送1.0----------------------------------------------------
+    //文字傳送---------------------------------------
 
     //圖片傳送區塊塊塊塊---------------------------------------------------------------------
     $('#file_test').change(function (event) {
@@ -112,8 +112,6 @@ $(function () {
             }
             reader.readAsDataURL(file);
         }
-        console.log("1.0");
-
     });
 
     //圖片傳送上傳區塊塊塊---------------------------------------------------
@@ -135,7 +133,6 @@ $(function () {
     $.uploadfile = function (filelist, divnamenum) {
 
         for (var i = 0; i < filelist.length; i++) {
-
             var file = filelist[i];
             var formData = new window.FormData();
             var ftype = filelist[i]['type'].substr((filelist[i]['type'].indexOf("/") + 1));
@@ -144,7 +141,6 @@ $(function () {
             //將檔案加進FormData
             if (filelist[i]['type'] == 'image/jpeg' || filelist[i]['type'] == 'image/png' || filelist[i]['type'] == 'image/gif') {
                 $.ajax({
-                    url: '/upload',
                     data: formData,
                     cache: false,
                     contentType: false,
@@ -160,8 +156,7 @@ $(function () {
                             'num': imgnum,
                             'type': ftype,
                         });
-                        console.log("1.4");
-                        $('#' + divnamenum).append('<div><a class=\'single\' href=\'./images/' + imgnum + '.' + ftype + '\'><img src=./images/' + imgnum + '.' + ftype + ' style=\'width:250px;height:180px;\' alt="" / ></a></div>');
+                        $('#' + divnamenum).append('<div><a class=\'single\' href=\'../images/' + imgnum + '.' + ftype + '\'><img src=./images/' + imgnum + '.' + ftype + ' style=\'width:250px;height:180px;\' alt="" / ></a></div>');
                         //$('#divshow').append('<div><p>'+name+':</p></div><div   data-imgid='+imgnum+'.'+ftype+' style=\'background-image:url(./images/'+imgnum+'.'+ftype+');width:300px;height:100px\';></div>');
 
                     }
@@ -169,7 +164,7 @@ $(function () {
             }
             else if (filelist[i]['type'] == 'video/mp4') {
                 $.ajax({
-                    url: '/uploadvideo',
+                    url: '/routes/uploadvideo',
                     data: formData,
                     cache: false,
                     contentType: false,
@@ -185,9 +180,8 @@ $(function () {
                             'num': imgnum,
                             'type': ftype,
                         });
-                        console.log("1.4");
                         //$('#divshow').append('<div><p>'+name+':</p></div><div><a class=\'single\' href=\'./images/'+imgnum+'.'+ftype+'\'><img src=./images/'+imgnum+'.'+ftype+' style=\'width:250px;height:180px;\' alt="" / ></a></div>');
-                        $('#divshow').append('<div><p>' + name + ':</p><video src="./video/' + imgnum + '.mp4" width="500px" height="400px" controls="controls" ></div>');
+                        $('#divshow').append('<div><p>' + name + ':</p><video src="../video/' + imgnum + '.mp4" width="500px" height="400px" controls="controls" ></div>');
                         //$('#divshow').append('<div><p>'+name+':</p></div><div   data-imgid='+imgnum+'.'+ftype+' style=\'background-image:url(./images/'+imgnum+'.'+ftype+');width:300px;height:100px\';></div>');
 
                     }
@@ -254,7 +248,7 @@ $(function () {
         }
 
         $.ajax({
-            url: '/pretestupload',
+            url: '/routes/pretestupload',
             data: formData,
             cache: false,
             contentType: false,
@@ -268,7 +262,7 @@ $(function () {
                 socket.emit('client_sent_pre', data);
                 tmp += "<div style='border:5px solid blue'><p>XXX 上傳了考古題</p>";
                 for (var a = 0; a < fn.length; a++) {
-                    tmp += "<p style='margin:0px auto;'>" + fn[a] + "</p><a href='/pretestdownload?fn=" + fn[a] + "'>下載</a>";
+                    tmp += "<p style='margin:0px auto;'>" + fn[a] + "</p><a href='/routes/pretestdownload?fn=" + fn[a] + "'>下載</a>";
                 }
                 tmp += "</div>";
                 $('#divshow').append(tmp);
@@ -285,7 +279,7 @@ $(function () {
         var tmp = "";
         tmp += "<div style='border:5px solid blue'><p>XXX 上傳了考古題</p>";
         for (var a = 0; a < fn.length; a++) {
-            tmp += "<p style='margin:0px auto;'>" + fn[a] + "</p><a href='/pretestdownload?fn=" + fn[a] + "'>下載</a>";
+            tmp += "<p style='margin:0px auto;'>" + fn[a] + "</p><a href='/routes/pretestdownload?fn=" + fn[a] + "'>下載</a>";
         }
         tmp += "</div>";
         $('#divshow').append(tmp);

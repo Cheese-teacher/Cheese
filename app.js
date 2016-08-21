@@ -26,7 +26,7 @@ var models = require("./lib/models");
 //toron
 var path = require('path');
 var favicon = require('serve-favicon');
-var routes = require('./routes/index');
+var routes = require('./routes/index.js');
 var users = require('./routes/users');
 var abc = require('./routes/abc');
 var login = require('./routes/login');
@@ -518,7 +518,9 @@ app.get("/:noteId/:action/:actionId", response.noteActions);
 app.get('*', function (req, res) {
     response.errorNotFound(res);
 });
+//-------------------------------------------------
 
+//-----------------------------------------------
 //socket.io secure
 io.use(realtime.secure);
 //socket.io auth

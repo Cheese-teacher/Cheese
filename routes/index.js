@@ -11,8 +11,8 @@ router.get('/', function(req, res, next) {
     res.render('./views/index2', { title: '聊天室' });
 });
 
+
 router.post('/uploadvideo',function(req,res){
-	
 	var form=new formidable.IncomingForm();
 	form.parse(req,function(err,fields,files){
 		//res.writeHead(20,{'content-type':'text/plain','charset':'utf-8'});
@@ -34,8 +34,7 @@ router.post('/uploadvideo',function(req,res){
 
 });
 
-router.post('/upload',function(req,res){
-	
+router.post('/upload2',function(req,res){
 	var form=new formidable.IncomingForm();
 	form.on('fileBegin', function(type, file) {
 		file.name=num+"."+type;
