@@ -63,9 +63,18 @@
     "node": ">=4.x"
   },
   "bugs": "https://github.com/hackmdio/hackmd/issues",
-  "keywords": ["Collaborative", "Markdown", "Notes"],
+  "keywords": [
+    "Collaborative",
+    "Markdown",
+    "Notes"
+  ],
   "homepage": "https://hackmd.io",
-  "maintainers": [{"name": "Max Wu", "email": "jackymaxj@gmail.com"}],
+  "maintainers": [
+    {
+      "name": "Max Wu",
+      "email": "jackymaxj@gmail.com"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/hackmdio/hackmd.git"

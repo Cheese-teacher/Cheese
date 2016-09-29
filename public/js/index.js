@@ -2182,7 +2182,9 @@ function havePermission() {
 }
 
 //socket.io actions
-var socket = io.connect({
+var socket = io('/Realtime');
+socket.connect({
+//var socket = io.connect({
     path: urlpath ? '/' + urlpath + '/socket.io/' : '',
     timeout: 5000 //5 secs to timeout
 });

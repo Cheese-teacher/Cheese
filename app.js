@@ -69,11 +69,26 @@ app.use(morgan('combined', {
 //socket io
 var io = require('socket.io')(server);
 
+var io_realtime = io.of('Realtime');
+//new chat
+/*
+var Chatroom = io
+    .of('Chatroom')
+    .on('connection', function(socket) {
+
+    });
+*/
+var Chatroom = io.of('Chatroom');
+routes[1].io = Chatroom;
+Chatroom.on('connection', routes[1].startConnection);
+
+
 //others
 var realtime = require("./lib/realtime.js");
 
 //assign socket io to realtime
-realtime.io = io;
+//realtime.io = io;
+realtime.io = io_realtime;
 
 //methodOverride
 app.use(methodOverride('_method'));
@@ -103,36 +118,12 @@ app.use(helmet.hsts({
     includeSubdomains: true,
     preload: true
 }));
-//toron 
-var io2 = io;
 
-io2.sockets.on('connect',function(socket){
-    onlineCount++;
-    io2.sockets.emit('someone_login',{'number':onlineCount});
-    console.log('有人加入了聊天室');
-    console.log('目前在縣人數: '+onlineCount);
-	
-	socket.on('disconnect', function(data){
-        onlineCount--;			
-        socket.broadcast.emit('someone_logout',{'number':onlineCount});
-        console.log('有人退出了聊天室');
-        console.log('目前在縣人數: '+onlineCount);
-	});
-    
-    socket.on('clientsend',function(data){
-        socket.broadcast.emit('serversend',data)
-    });
-    socket.on('client_send_img',function(data){
-        socket.broadcast.emit('server_send_img',data)
-    });
-	socket.on('client_sent_pre',function(data){
-      socket.broadcast.emit('server_send_pre',data)
-    });
-});
-app.use('/socket', express.static(__dirname + '/node_modules/socket.io/lib'));
+
+//app.use('/socket', express.static(__dirname + '/node_modules/socket.io/lib'));
 app.use('/users', users);
 app.get('/abc',abc);
-app.use('/routes', routes);
+app.use('/routes', routes[0]);
 app.get('/mobile',mobile);
 app.get('/login',login);
 // routes without sessions
@@ -522,9 +513,9 @@ app.get('*', function (req, res) {
 
 //-----------------------------------------------
 //socket.io secure
-io.use(realtime.secure);
+io_realtime.use(realtime.secure);
 //socket.io auth
-io.use(passportSocketIo.authorize({
+io_realtime.use(passportSocketIo.authorize({
     cookieParser: cookieParser,
     key: config.sessionname,
     secret: config.sessionsecret,
@@ -536,7 +527,7 @@ io.use(passportSocketIo.authorize({
 io.set('heartbeat interval', config.heartbeatinterval);
 io.set('heartbeat timeout', config.heartbeattimeout);
 //socket.io connection
-io.sockets.on('connection', realtime.connection);
+io_realtime.on('connection', realtime.connection);
 
 //listen
 function startListen() {
@@ -576,8 +567,8 @@ process.on('uncaughtException', function (err) {
 process.on('SIGINT', function () {
     config.maintenance = true;
     // disconnect all socket.io clients
-    Object.keys(io.sockets.sockets).forEach(function (key) {
-        var socket = io.sockets.sockets[key];
+    Object.keys(io_realtime.sockets.sockets).forEach(function (key) {
+        var socket = io_realtime.sockets.sockets[key];
         // notify client server going into maintenance status
         socket.emit('maintenance');
         socket.disconnect(true);

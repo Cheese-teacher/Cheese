@@ -31,7 +31,7 @@ function upload(num) {
 }
 $(function () {
 //文字傳送---------------------------------------
-    var socket = io.connect();
+    var socket = io('/Chatroom');
     var filelist = "";
 
     //sam new
@@ -78,7 +78,7 @@ $(function () {
 
 
 
-
+    //socket.on('')
     socket.on('serversend', function (data) {
         $('#divshow').append('<p>' + data.name + ' : ' + data.message + '</p>');
         window.scrollTo(0, document.getElementById('divshow').clientHeight);
@@ -288,4 +288,3 @@ $(function () {
 
     //圖片拖拉功能-------------------------------------------------------------------
 });
-
