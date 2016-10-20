@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous"></script>
+  <!--fancyBox js-->
+  <link rel="stylesheet" href="javascripts/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="javascripts/fancybox/jquery.fancybox.js"></script>
+
+  <!--fancyBox js-->
+
+  <script src='socket.io/socket.io.js'></script>
+  <script src="javascripts/mainpage1.js"></script>
+  <!--bootstrap-->
+  
+  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+   
+
+<style>
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
+</style>
+</head>
+
+<body>
+
+<div class="dropdown">
+<button onclick="myFunction()" class="dropbtn">Dropdown</button>
+  <div id="myDropdown" class="dropdown-content">
+    
+  </div>
+</div>
+
+<input type="button" value="管院" id="management">
+ <input type="button" value="科院" id="technology">
+<input type="button" value="人院" id="humanities">
+<input type="button" value="教院" id="education">
+ <input type="button" value="通識" id="tongshi">
+ 
+ 
+ <div id="course">
+ 
+ </div>
+ 
+ <div id="divshow" style="width:100%">
+ 
+  </div>
+ 
+ 
+ 
+ 
+</body>
+
+</html>
