@@ -1,0 +1,40 @@
+<!DOCTYPE html>  
+ <html>  
+ <head>  
+  <meta charset="utf-8">  
+  <title><%= title %></title>  
+ </head>
+
+ <body>  
+ <h1>熱門筆記</h1>  
+ <p><%= title %></p>
+ 
+ <div class="gotonote" >
+    
+    <div class="notelist">
+    <table>
+    <tr>
+            <th>id</th>
+            <th>ownerId</th>
+            <th>創立時間</th>
+            <th>title</th>
+            <th>上一個修改者</th>
+    </tr>
+    <% for ( var i = 0 ; i < data.length ; i++){ %>
+    <tr>
+        
+            <td><%= data[i].id %></td>
+            <td><a href="http://localhost:3000/<%-notestring[i]%>"  class="btn btn-lg btn-default">New note</a></td>
+            <td><%= data[i].ownerId %></td>
+            <td><%= data[i].createdAt %></td>
+            <td><%= data[i].title %></td>
+            <td><%= data[i].lastchangeuserId %></td>
+        
+    </tr>
+    <% } %>
+    </table>
+    </div>
+</div> 
+  
+ </body>  
+ </html>  

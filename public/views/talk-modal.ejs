@@ -1,0 +1,63 @@
+
+
+<!-- talk Modal -->
+<div class="modal fade talk-modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">彈幕資料</h4>
+      </div>
+      <div class="modal-body">
+       <div class="row">
+                <div class="col-md-6">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >文字</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="info" id="info" type="text" placeholder="弹幕文字信息"/>
+                            </div>
+                        </div>
+                        
+                       
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >圖片</label>
+                            <div class="col-sm-6">
+                                <label class="radio-inline">
+                                  <input type="radio" name="img"  value="cute.png" checked=""> cute.png
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="img"  value="haha.gif"> haha.gif
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="img"   value="none">  無圖
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >顏色</label>
+                            <div class="col-sm-6">
+                                <input type="text" value="fff" name="color" class="pick-a-color form-control">
+                            </div>
+                        </div>
+                    </form>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" ></label>
+                            <div class="col-sm-3">
+                                <button  class="btn btn-primary   bb-light-blue ui-talkrun"  > 運行</button>
+                            </div>
+                                                        <div class="col-sm-3">
+                                <button  class="btn btn-warning  ui-talkclear"  > 清除</button>
+                            </div>
+                        </div>
+                </div>
+                
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

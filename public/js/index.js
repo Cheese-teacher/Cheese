@@ -636,7 +636,10 @@ var ui = {
         list:$(".ui-list"),
         smile:$(".ui-smile"),
         tag:$(".ui-tag"),
-        heade:$(".ui-header li a")
+        heade:$(".ui-header li a"),
+        talk:$(".ui-talk"),
+        talkrun:$(".ui-talkrun"),
+        clear:$(".ui-talkclear")
     },
     infobar: {
         lastchange: $(".ui-lastchange"),
@@ -1534,7 +1537,31 @@ ui.toolbar.tag.click(function (){
     var nowvalue=editor.getSelection();
     editor.replaceSelection("###### tags: `"+nowvalue+"`");
 });
+ui.toolbar.talk.click(function (){
+    var example_item={'img':'../img/heisenberg.png','info':'Hello world!'};
+    $('body').barrager(example_item);
+    return false;
+    
+    
+});
+ui.toolbar.talkrun.click(function (){
 
+    var  info=$("#info").val();
+    var item={
+    img:'../img/heisenberg.png',  
+    info:info, 
+    href:'http://www.yaseng.org',
+    close:true, 
+    speed:6, 
+    bottom:70,  
+    color:'#fff',  
+    old_ie_color:'#000000', 
+    }
+$('body').barrager(item);
+
+    
+    
+});
 // import from google drive
 var picker = null;
 function buildImportFromGoogleDrive() {

@@ -29,6 +29,7 @@ var favicon = require('serve-favicon');
 var routes = require('./routes/index.js');
 var users = require('./routes/users');
 var abc = require('./routes/abc');
+var notelist=require('./public/js/note.js');
 var login = require('./routes/login');
 var mobile=require('./routes/mobile');
 var mysql=require('mysql');
@@ -124,6 +125,7 @@ app.use(helmet.hsts({
 app.use('/users', users);
 app.get('/abc',abc);
 app.use('/routes', routes[0]);
+app.use('/notelist', notelist);
 app.get('/mobile',mobile);
 app.get('/login',login);
 // routes without sessions
