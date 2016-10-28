@@ -1442,6 +1442,7 @@ ui.mode.gannt.click(function () {
 });
 
 ui.mode.todoList.click(function () {
+    $('#todoModal').modal('show');
     var data = '\n- [ ] Todos \n  - [x] Buy some salad \n  - [ ] Brush teeth \n  - [x] Drink some water \n';
     editor.replaceRange(data, {
         line: editor.lastLine(),

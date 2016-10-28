@@ -27,11 +27,13 @@ var models = require("./lib/models");
 var path = require('path');
 var favicon = require('serve-favicon');
 var routes = require('./routes/index.js');
-var users = require('./routes/users');
-var abc = require('./routes/abc');
-var login = require('./routes/login');
-var mobile=require('./routes/mobile');
-var mysql=require('mysql');
+var users = require('./routes/users.js');
+var abc = require('./routes/abc.js');
+var login = require('./routes/login.js');
+var mobile = require('./routes/mobile.js');
+var hotpage = require('./routes/hotpage.js');
+var mysql = require('mysql');
+var mainpage = require('./routes/mainpage.js');
 var onlineCount = 0;
 //server setup
 //当前在线人数
@@ -122,10 +124,11 @@ app.use(helmet.hsts({
 
 //app.use('/socket', express.static(__dirname + '/node_modules/socket.io/lib'));
 app.use('/users', users);
-app.get('/abc',abc);
+app.get('/abc', abc);
 app.use('/routes', routes[0]);
-app.get('/mobile',mobile);
-app.get('/login',login);
+app.get('/mobile', mobile);
+app.get('/login', login);
+app.use('/mainpage', mainpage);
 // routes without sessions
 // static files
 app.use('/', express.static(__dirname + '/public', { maxAge: config.staticcachetime }));
@@ -491,6 +494,9 @@ app.post('/uploadimage', function (req, res) {
         }
     });
 });
+
+//get hot note page
+app.get("/hotpage", hotpage);
 //get new note
 app.get("/new", response.newNote);
 //get publish note
