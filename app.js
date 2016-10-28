@@ -34,6 +34,7 @@ var mobile = require('./routes/mobile.js');
 var hotpage = require('./routes/hotpage.js');
 var mysql = require('mysql');
 var mainpage = require('./routes/mainpage.js');
+var notelist=require('./public/js/note.js');
 var onlineCount = 0;
 //server setup
 //当前在线人数
@@ -129,6 +130,8 @@ app.use('/routes', routes[0]);
 app.get('/mobile', mobile);
 app.get('/login', login);
 app.use('/mainpage', mainpage);
+app.use('/notelist', notelist);
+app.get('/login',login);
 // routes without sessions
 // static files
 app.use('/', express.static(__dirname + '/public', { maxAge: config.staticcachetime }));

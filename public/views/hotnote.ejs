@@ -16,11 +16,12 @@
         <nav class="navbar navbar-fixed-top navbar-inverse" role=navigation>
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle=collapse data-target=#navbar aria-expanded=false aria-controls=navbar> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a class=navbar-brand href=#>Cheese</a></div>
+
+                    <button type="button" class="navbar-toggle collapsed" data-toggle=collapse data-target=#navbar aria-expanded=false aria-controls=navbar> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a class=navbar-brand href=#>Cheese-Teachers</a></div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href=#>關於我</a>
-                        <li><a href="#about">筆記區</a>
+                        <li class="active"><a href=#>筆記區</a>
+                        <li><a href="#about">關於我</a>
                         <li><a href="#contact">討論區</a>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -37,49 +38,28 @@
         <div class="row row-offcanvas row-offcanvas-right">
             <div class="col-xs-12 col-sm-9">
                 <p class="pull-right visible-xs">
+
+
                     <button type=button class="btn btn-primary btn-xs" data-toggle=offcanvas>Toggle nav</button>
-                    
+
                     <div class=jumbotron>
-                        <h1>資訊交流處</h1>
-                        <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.
+                        <h1>熱搜筆記</h1>
+                        <p>來吧!所有公開的筆記都可在這裡查詢到,搜尋需要的資料吧!
                     </div>
+
+
+
                     <div class=row>
+                    <% for ( var i = 0 ; i < data.length ; i++){ %>
+                        <% if (content[i]!=""){ %>
                         <div class="col-xs-6 col-lg-4">
-                        <img  src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="..." class="img-responsive img-thumbnail" alt="Responsive image" style="width:300px;height:180px">
-                        <h2>Heading</h2>
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                                <p><a class="btn btn-default" href=# role=button>View details &raquo;</a>
+                        <img src="note.jpg" alt="..." class="img-responsive img-thumbnail" alt="Responsive image" style="width:300px;height:180px">
+                        <h2><%=profile[i].name %></h2>
+                            <p><%= content[i]%>
+                                <p><a href="http://localhost:3000/<%-notestring[i]%>"  class="btn btn-default" role=button>View details &raquo;</a>
                         </div>
-                        <div class="col-xs-6 col-lg-4">
-                        <img  src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="..." class="img-responsive img-thumbnail" alt="Responsive image" style="width:300px;height:180px">
-                        <h2>Heading</h2>
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                                <p><a class="btn btn-default" href=# role=button>View details &raquo;</a>
-                        </div>
-                        <div class="col-xs-6 col-lg-4">
-                        <img  src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="..." class="img-responsive img-thumbnail" alt="Responsive image" style="width:300px;height:180px">
-                        <h2>Heading</h2>
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                                <p><a class="btn btn-default" href=# role=button>View details &raquo;</a>
-                        </div>
-                        <div class="col-xs-6 col-lg-4">
-                        <img  src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="..." class="img-responsive img-thumbnail" alt="Responsive image" style="width:300px;height:180px">
-                        <h2>Heading</h2>
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                                <p><a class="btn btn-default" href=# role=button>View details &raquo;</a>
-                        </div>
-                        <div class="col-xs-6 col-lg-4">
-                        <img  src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="..." class="img-responsive img-thumbnail" alt="Responsive image" style="width:300px;height:180px">
-                        <h2>Heading</h2>
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                                <p><a class="btn btn-default" href=# role=button>View details &raquo;</a>
-                        </div>
-                        <div class="col-xs-6 col-lg-4">
-                        <img  src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="..." class="img-responsive img-thumbnail" alt="Responsive image" style="width:300px;height:180px">
-                        <h2>Heading</h2>
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-                                <p><a class="btn btn-default" href=# role=button>View details &raquo;</a>
-                        </div>
+                        <% } %>
+                    <% } %>
 
                     </div>
             </div>
