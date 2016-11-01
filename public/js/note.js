@@ -17,10 +17,8 @@ router2.get('/', function(req, res, next) {
     var connection = mysql.createConnection(db_option);
     var query ='SELECT notes.id,notes.content,users.profile FROM hackmd.users,hackmd.notes where users.id=notes.ownerId';
     connection.query(query, function(err, rows ,fields){
-        
         if(!err){
 			console.log(rows);
-			
 		}
         var data = rows;
         var notestring=new Array();
@@ -35,12 +33,38 @@ router2.get('/', function(req, res, next) {
                                      notestring:notestring,
                                      data:data,
                                      content:content,
-                                     profile: profile });   
-        
+                                     profile: profile });
     });
-   
-
 });
 
+//viewCount sort
+router2.post('/viewCount', function(req, res) {
+    //res.send("QQ");
+
+    var connection = mysql.createConnection(db_option);
+    var query ='SELECT notes.id,notes.content,users.profile,notes.viewcount FROM hackmd.users,hackmd.notes where users.id=notes.ownerId order by viewcount desc';
+    connection.query(query, function(err, rows ,fields){
+        if(!err){
+			console.log(rows);
+		}
+        var data = rows;
+        var notestring=new Array();
+        var profile=new Array();
+        var content=new Array();
+        for(var i=0;i<data.length;i++){
+            notestring[i] = LZString.compressToBase64(data[i].id);
+            profile[i] = models.User.parseProfile(data[i].profile);
+            content[i] = LZString.decompressFromBase64(data[i].content);
+        }
+        var obj = {
+            notestring:notestring,
+            data:data,
+            content:content,
+            profile:profile
+        };
+        res.send(obj);
+    });
+
+});
 
 module.exports = router2;

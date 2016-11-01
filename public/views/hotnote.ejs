@@ -23,6 +23,7 @@
                         <li class="active"><a href=#>筆記區</a>
                         <li><a href="#about">關於我</a>
                         <li><a href="#contact">討論區</a>
+                        <li><a href="#">考古題專區</a>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class=""><a href="#contact">贊助我們</a>
@@ -38,38 +39,33 @@
         <div class="row row-offcanvas row-offcanvas-right">
             <div class="col-xs-12 col-sm-9">
                 <p class="pull-right visible-xs">
-
-
                     <button type=button class="btn btn-primary btn-xs" data-toggle=offcanvas>Toggle nav</button>
-
                     <div class=jumbotron>
                         <h1>熱搜筆記</h1>
                         <p>來吧!所有公開的筆記都可在這裡查詢到,搜尋需要的資料吧!
                     </div>
-
-
-
+                    <!--<button type="button" id="viewCount">依點擊率排序</button>-->
                     <div class=row>
-                    <% for ( var i = 0 ; i < data.length ; i++){ %>
-                        <% if (content[i]!=""){ %>
-                        <div class="col-xs-6 col-lg-4">
-                        <img src="note.jpg" alt="..." class="img-responsive img-thumbnail" alt="Responsive image" style="width:300px;height:180px">
-                        <h2><%=profile[i].name %></h2>
-                            <p><%= content[i]%>
-                                <p><a href="http://localhost:3000/<%-notestring[i]%>"  class="btn btn-default" role=button>View details &raquo;</a>
+                        <div id="noteSquare">
+                            <% for ( var i = 0 ; i < data.length ; i++){ %>
+                                <% if (content[i]!=""){ %>
+                                <div class="col-xs-6 col-lg-4">
+                                <img src="note.jpg" alt="..." class="img-responsive img-thumbnail" alt="Responsive image" style="width:300px;height:180px">
+                                <h2><%=profile[i].name %></h2>
+                                    <p><%= content[i]%>
+                                        <p><a href="http://localhost:3000/<%-notestring[i]%>"  class="btn btn-default" role=button>View details &raquo;</a>
+                                </div>
+                                <% } %>
+                            <% } %>
                         </div>
-                        <% } %>
-                    <% } %>
-
                     </div>
             </div>
             <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id=sidebar role=navigation>
                 <div class=list-group>
                     <a href=# class="list-group-item active">熱門筆記區</a>
-                    <a href=# class=list-group-item>點擊率</a>
-                    <a href=# class=list-group-item>系所</a>
-                    <a href=# class=list-group-item>討論度</a>
-                    <a href=# class=list-group-item>考古題專區</a>
+                    <a href=# class="list-group-item" id="viewCount">依點擊率排序</a>
+                    <a href=# class=list-group-item>依系所排序</a>
+                    <a href=# class=list-group-item>依討論度排序</a>
                 </div>
             </div>
         </div>
@@ -79,6 +75,7 @@
     </div>
     <script src=https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js></script>
     <script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js></script>
+    <script src="/js/hotnote.js" defer></script>
 </body>
 
 </html>
