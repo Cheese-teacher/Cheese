@@ -4,6 +4,7 @@ var models = require("../../lib/models");
 var mysql = require('mysql');
 var LZString = require('lz-string');
 var S = require('string');
+var config = require("../../lib/config.js");
 var db_option = {
     host: 'localhost',
     user: 'admin',
@@ -25,15 +26,18 @@ router2.get('/', function(req, res, next) {
         var profile=new Array();
         var content=new Array();
         for(var i=0;i<data.length;i++){
-            notestring[i]=LZString.compressToBase64(data[i].id);
+            notestring[i] = LZString.compressToBase64(data[i].id);
             profile[i] = models.User.parseProfile(data[i].profile);
-            content[i]=LZString.decompressFromBase64(data[i].content);
+            content[i] = LZString.decompressFromBase64(data[i].content);
         }
+        var url = config.urlpath;
         res.render('./views/hotnote', { title: '筆記區',
                                      notestring:notestring,
                                      data:data,
                                      content:content,
-                                     profile: profile });
+                                     profile: profile ,
+                                     url:url
+        });
     });
 });
 
@@ -48,10 +52,10 @@ router2.post('/viewCount', function(req, res) {
 			console.log(rows);
 		}
         var data = rows;
-        var notestring=new Array();
-        var profile=new Array();
-        var content=new Array();
-        for(var i=0;i<data.length;i++){
+        var notestring = new Array();
+        var profile = new Array();
+        var content = new Array();
+        for(var i = 0; i < data.length; i++){
             notestring[i] = LZString.compressToBase64(data[i].id);
             profile[i] = models.User.parseProfile(data[i].profile);
             content[i] = LZString.decompressFromBase64(data[i].content);
@@ -66,5 +70,4 @@ router2.post('/viewCount', function(req, res) {
     });
 
 });
-
 module.exports = router2;

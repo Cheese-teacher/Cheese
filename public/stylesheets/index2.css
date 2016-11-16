@@ -1,0 +1,269 @@
+*{
+	-webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+div{
+	-webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  .modal-lg {
+    width: 100%;
+  }
+}
+@media (min-width: 992px) {
+  .modal-lg {
+    width: 900px;
+  }
+}
+@keyframes animeleupdown{
+    0%{
+      top:0px;
+    }
+    25%{
+      top:-3px;
+    }
+    50%{
+      top:-5px;
+    }
+    75%{
+      top:-3px;
+    }
+    100%{
+      top:-5px;
+    }
+
+}
+
+.eleupdown:hover{
+
+	animation-name:animeleupdown;
+    animation-duration:0.5s;
+    animation-iteration-count:1;
+    animation-timing-function:linear;
+    animation-direction:normal;
+}
+
+
+#post-title ,#new_post_youtube_text,#new_post_tag{
+	width:100%;
+	border:0px;
+	border-bottom:1px solid #88aaff;
+}
+
+#text,#new_post_code{
+	width:100%;
+	resize : none;
+	border:0px;
+	border:1px solid #88aaff;
+	border-top:0px;
+	border-radius: 15px;
+
+}
+#posttype{
+	width:70%;
+	text-align-last: center;
+    font-size: 19px;
+    border: 1px solid #adc4ff;
+    border-bottom: 3px solid #adc4ff;
+    border-radius: 15px;
+}
+.new_post_buttext{
+	font-size: 15px;
+	font-weight: normal;
+	font-family:"細明體";
+}
+#new_post_youtube_text,#new_post_code,#new_post_tag{
+	width:100%;
+	display:none;
+}
+#new_post_preimg{
+	display: inline;
+}
+.new_post_pi{
+	padding:10px;
+	margin:0px 10px 10px 0px;
+	border-right:2px solid #adc4ff;
+	border-bottom:2px solid #adc4ff;
+	border-radius: 15px;
+}
+#sendtext{
+	width:100%;
+	height:40px;
+	background-color:#4778f6;
+	border:0px;
+	border-radius: 5px 5px 15px 15px;
+	font-size:24px;
+	color:#ffffff;
+
+}
+#post-title,#ano, #posttype ,#text ,#new_post_img ,#new_post_preimg ,#lab-links ,#new_post_youtube_text ,#new_post_code_tmp ,#new_post_code,#margin,#new_post_tag{
+	margin:0% auto 2% auto;
+}
+
+#comm_content,#comm_code{
+	width:80%;
+	resize: none;
+}
+.a{
+	border:2px solid #c2c2c2;
+}
+#divshow{
+	float:left;
+
+}
+
+.posting-one-img{
+	height:50px;
+	width:50px;
+	background-color:#ED6976;
+	border-radius:30px;
+	margin:10px 10px 0px 10px;
+	display:inline-block;
+}
+.posting-one-type{
+	 width:80%;
+	 display:inline-block;
+	 word-break:break-all;
+
+}
+.posting-one-t ,{
+	font-size:14px;
+	font-weight:700;
+}
+.posting-one-date{
+	color:#E6E6E6;
+	font-size:10px;
+}
+.posting-two .postingthree{
+	width:100%;
+}
+.posting-two-showbutton{
+	color:#5882FA;
+	text-decoration:underline;
+}
+
+.posting-two-content{
+	width:90%;
+	margin:5%;
+	border-left:4px solid #D9E6F6;
+	padding-left:10px;
+	border-radius:2px;
+	font-size:18px;
+}
+.posting-two-button{
+	width:90%;
+	margin:5%;
+}
+.posting-three-code{
+	word-wrap: break-word;
+}
+.posting-three-pic{
+
+	width:90%;
+	margin:2% 5%;
+}
+.posting-three-youtube{
+	width:90%;
+	margin:2% auto;
+}
+.posting{
+	width:100%;
+	float:left;
+	background:#01071D;
+	margin-bottom: 3%;
+	padding:10px 0px 10px 0px;
+	border-width: 0px 1px 2px 0px;
+	border-style:outset;
+	border-color:#CCC;
+
+}
+.posting:hover{
+	box-shadow: 5px 8px 16px 0 rgb(230, 238, 255),0 6px 20px 0 rgb(230, 238, 255);
+}
+.posting-l{
+	margin:1% 3% auto 2%;
+	background:#ffcccc;
+	float:left;
+}
+.posting-r{
+	float:left;
+	width:85%;
+	word-wrap: break-word; //超過DIV 長度文字換行
+}
+.posting-r-nd{
+	color:#4d79ff;
+	font-weight:bloder;
+	font-size:150%;
+}
+.posting-r-title{
+	color:#FFFFFF;
+	font-size:120%;
+}
+.posting-r-content{
+	color:#FFFFFF;
+	font-size:120%;
+}
+.comm{
+	margin:0px 0px 15px 0px;
+	padding:10px;
+	border-radius :15px;
+}
+.comm_score{
+	margin-top:10px;
+	text-align: center;
+	color:#D8D8D8;
+}
+.comm_one_pic{
+	height:50px;
+	width:50px;
+	background-color:#ED6976;
+	border-radius:30px;
+
+}
+.comm_one_bar{
+	margin-top:15px;
+	height:8px;
+	width:100%;
+}
+.comm_one_button{
+	margin-top:15px;
+	margin-left:2px;
+
+}
+.comm_two{
+	position:relative;
+	top:1px;
+	margin:1% 0% 1% 3%;
+}
+.comm_two_content{
+	font-size: 18px;
+	position:relative;
+	top:-100px;
+}
+
+.comm_three_pic{
+	display:inline-block;
+	margin:0px 0px 0px 65px;
+	padding:15px;
+	border-radius: 15px;
+	background-color: #E7E7E7;
+}
+.comm_three_code{
+	display:inline-block;
+	margin:0px 0px 0px 65px;
+	padding:10px;
+	border-radius: 10px;
+	background-color: #E7E7E7;
+}
+.comm_three_pic > a{
+	padding:5px;
+}
+.b{
+	border:#EEEEEE;
+}
+hr{
+	border-color:#C7C7C7;
+}

@@ -1,6 +1,8 @@
 //app
 //external modules
 var express = require('express');
+var async = require("async");
+
 var toobusy = require('toobusy-js');
 var ejs = require('ejs');
 var passport = require('passport');
@@ -27,17 +29,16 @@ var models = require("./lib/models");
 var path = require('path');
 var favicon = require('serve-favicon');
 var routes = require('./routes/index.js');
-var users = require('./routes/users.js');
-var abc = require('./routes/abc.js');
-var login = require('./routes/login.js');
-var mobile = require('./routes/mobile.js');
+var pretest=require('./routes/pretest.js');
+var mainpage=require('./routes/mainpage.js');
+var selectcourse = require('./routes/selectcourse.js');
+
 var hotpage = require('./routes/hotpage.js');
 var mysql = require('mysql');
 var mainpage = require('./routes/mainpage.js');
 var notelist=require('./public/js/note.js');
 var onlineCount = 0;
 //server setup
-//当前在线人数
 
 
 if (config.usessl) {
@@ -123,15 +124,7 @@ app.use(helmet.hsts({
 }));
 
 
-//app.use('/socket', express.static(__dirname + '/node_modules/socket.io/lib'));
-app.use('/users', users);
-app.get('/abc', abc);
-app.use('/routes', routes[0]);
-app.get('/mobile', mobile);
-app.get('/login', login);
-app.use('/mainpage', mainpage);
-app.use('/notelist', notelist);
-app.get('/login',login);
+
 // routes without sessions
 // static files
 app.use('/', express.static(__dirname + '/public', { maxAge: config.staticcachetime }));
@@ -150,6 +143,14 @@ app.use(session({
     },
     store: sessionStore
 }));
+
+//app.use('/socket', express.static(__dirname + '/node_modules/socket.io/lib'));
+app.use('/routes', routes[0]);
+app.use('/mainpage', mainpage);
+app.use('/notelist', notelist);
+app.use('/pretest',pretest);
+app.use('/selectcourse', selectcourse);
+app.use('/mainpage',mainpage);
 
 // session resumption
 var tlsSessionStore = {};

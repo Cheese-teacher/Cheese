@@ -2,11 +2,11 @@
 <html>
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
     <%= title %>
   </title>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
+
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
     crossorigin="anonymous"></script>
   <!--fancyBox js-->
@@ -18,79 +18,86 @@
   <script src='socket.io/socket.io.js'></script>
   <script src="javascripts/mainpage1.js"></script>
   <!--bootstrap-->
-  
+    <script src="/javascripts/bootbox.min.js"></script>
   <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-   
+     <link rel='stylesheet' href='/stylesheets/mainpage.css' />
 
 <style>
-.dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
+.a{border:1px solid #CDCDCD;}
 
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #3e8e41;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown a:hover {background-color: #f1f1f1}
-
-.show {display:block;}
 </style>
 </head>
 
-<body>
+<body >
 
-<div class="dropdown">
-<button onclick="myFunction()" class="dropbtn">Dropdown</button>
-  <div id="myDropdown" class="dropdown-content">
-    
-  </div>
+<nav class="navbar navbar-default" role="navigation">
+<div class="container-fluid ">
+    <div class="row ">
+    <div class="col-md-12 col-lg-12 ">
+	    <div class="a banner " style="">
+	    	<div class="banner-one" >
+	    	CHEESE 老師
+	    	</div>
+
+	    	<div class="banner-two" >
+	    	<span class="b-dot1">“</span>
+	    	<div class="banner-title">
+	    	<span class="banner-title-content">一個給老師一個看熱閙的地方看熱閙的地方看熱閙的地方看熱閙的地方</span>
+			<img id="banner_input" src="./images/direct-ico.png" style="width:3%;height:9%">
+			</div>
+	    	<span class="b-dot2">”</span>
+	    	
+	    	</div>
+
+		</div>
+		<div class="a banner2 hidden-xs" style="">
+				<div class="banner2-one">
+		    	<span class="b-one">CHEESE 老師</span>
+		    	</div>
+		    	<div class="banner2-two">
+		    	<span class="b2-dot1">“</span>
+		    	<div class="banner-title banner2-title">
+		    	<span class="banner-title-content">一個給老師一個看熱閙的地方</span>
+		    	<img id="banner_input" src="./images/direct-ico.png" style="width:3%;height:6%">
+		    	</div>
+		    	<span class="b2-dot2">”</span>
+		    	</div>
+	   	</div>
+	</div>
+
+	<div class="navbar-header hidden-md hidden-lg hidden-sm">
+	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#option">
+	    <span class="icon-bar"></span>
+	    <span class="icon-bar"></span>
+	    <span class="icon-bar"></span>
+	    </button>
+	    <a class="navbar-brand" >課程選單</a>
+	    <div class="collapse navbar-collapse" id="option">
+            <ul class="nav navbar-nav " id="coursemenu">
+            </ul>
+          </div>
+	</div>
+	</div>
+
+	<div class="row  paddrow a" >
+	<div class=" col-md-2">
+		<div class="selectedclass hidden-xs" style=""></div>
+	</div>
+
+	<div class=" col-md-10">
+		<div class="hotpost" style="width:100%">
+			<p id="hotpost-a">大家都在聊什麼 ?</p>
+		</div>
+	 
+	</div>
+	</div>
+
 </div>
+</nav>
 
-<input type="button" value="管院" id="management">
- <input type="button" value="科院" id="technology">
-<input type="button" value="人院" id="humanities">
-<input type="button" value="教院" id="education">
- <input type="button" value="通識" id="tongshi">
  
- 
- <div id="course">
- 
- </div>
- 
- <div id="divshow" style="width:100%">
- 
-  </div>
- 
- 
- 
- 
+
 </body>
 
 </html>

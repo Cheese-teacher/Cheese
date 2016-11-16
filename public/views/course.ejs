@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/course.css' />
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous"></script>
+  <!--fancyBox js-->
+  <link rel="stylesheet" href="javascripts/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="javascripts/fancybox/jquery.fancybox.js"></script>
+
+  <!--fancyBox js-->
+
+  <script src='socket.io/socket.io.js'></script>
+  <script src="javascripts/course.js"></script>
+  <!--bootstrap-->
+  
+  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+   
+
+</head>
+
+<body>
+<div class="container">
+<div class="row">
+<div class="col-md-6">
+	<select id="yourCollege">
+	<option value="all">全部</option>
+	<option value="管院">管院</option>
+	<option value="科院">科院</option>
+	<option value="人院">人院</option>
+	<option value="教院">教院</option>
+	<option value="通識">通識</option>
+	</select>
+	<input type="button" class="btn btn-default btn-success" onclick="departmentselect()" value="送出">
+		
+
+	 
+	<div id="College">
+	 
+	</div>
+	 
+	 <div id="searchCollege">
+	 
+	 </div>
+	 
+	 <div id="buttonCollege">
+	 
+	 </div>
+	 
+	 <div id="course">
+	 
+	 </div>
+</div>
+
+<div class="col-md-6">
+
+ <!--右邊-->
+ <select id="Yourdepartment">
+	<option value="all">全部</option>
+	<option value="中文系">中文系</option>
+　  <option value="諮人系">諮人系</option>
+　	<option value="國比系">國比系</option>
+　  <option value="社工系">社工系</option>
+　	<option value="外文系">外文系</option>
+	<option value="歷史系">歷史系</option>
+	<option value="公行系">公行系</option>
+	<option value="教政系">教政系</option>
+	<option value="東南亞系">東南亞系</option>
+	<option value="諮人系終身學習與人力資源">諮人系終身學習與人力資源</option>
+	<option value="經濟系">經濟系</option>
+	<option value="國企系">國企系</option>
+	<option value="資管系">資管系</option>
+	<option value="財金系">財金系</option>
+	<option value="高階經管班">高階經管班</option>
+	<option value="資工系">資工系</option>
+	<option value="土木系">土木系</option>
+	<option value="電機系">電機系</option>
+	<option value="應化系">應化系</option>
+	<option value="應化生醫所">應化生醫所</option>
+	<option value="應光系">應光系</option>
+	<option value="光電碩專班">光電碩專班</option>
+	<option value="公行專班">公行專班</option>
+	<option value="東南亞系人類學">東南亞系人類學</option>
+	<option value="東南亞系在職專班">東南亞系在職專班</option>
+	<option value="終身學習專班">終身學習專班</option>
+	<option value="華文學程">華文學程</option>
+	<option value="非營利組織專班">非營利組織專班</option>
+	<option value="觀光餐旅系觀光">觀光餐旅系觀光</option>
+	<option value="觀光餐旅系餐旅">觀光餐旅系餐旅</option>
+	<option value="兩岸高階主管班">兩岸高階主管班</option>
+	<option value="新興產業博士班">新興產業博士班</option>
+	<option value="原鄉發展學士專班">原鄉發展學士專班</option>
+	<option value="體育室">體育室</option>
+	<option value="軍訓室">軍訓室</option>
+	<option value="課科所">教育學程</option>
+	<option value="課科所">共同選</option>
+	<option value="共同必">共同必</option>
+	<option value="通識">通識</option>
+	<option value="管院">管院</option>
+	<option value="國際華語文學程">國際華語文學程</option>
+	<option value="公職養成學分學程">公職養成學分學程</option>
+
+
+
+	 </select>
+	 
+	<select id="YourGrade">
+	
+	<option value="all">全部</option>
+	  <option value="1">大一</option>
+	 <option value="2">大二</option>
+	 <option value="3">大三</option>
+	 <option value="4">大四以上</option>
+	 <option value="g">碩班</option>
+	 <option value="p">博班</option>
+	 
+	 
+	 </select>
+	 </br>
+	 課程名字<input type="text" id="coursename">
+	 </br>
+	 <input type="button" class="btn btn-default btn-success" id="classselect" value="送出">
+	 
+	 <div id ="resulttable" >
+	 
+	 
+	 
+	 
+	 </div>
+	 
+	 
+	 <div id="yourcoursetable">
+	 
+	 </div>
+	 
+	 <div id="test">
+	 
+	 </div>
+</div><!--class col-md-6-->
+</div><!--class row-->
+</div><!--class container-->
+	<!--uploadclass
+	<p> <input id="myfile"  type="file"     /></p>
+    <textarea  id="fileContent" cols="68" rows="10"  ></textarea>
+	-->
+	
+  <!--發文部份-->
+
+</body>
+
+</html>
