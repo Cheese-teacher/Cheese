@@ -268,7 +268,7 @@ router.post('/insertdepartment', upload.array(),function(req, res , next){
 	connection.query(' UPDATE users SET hotselected = "'+departmentid+'" where id = "'+req.session.passport.user+'"  '  ,function(error, rows, fields){
 		//檢查是否有錯誤
 		if(error){
-			console.log(error);
+			throw error;
 		}
 		res.send(rows);
 	});

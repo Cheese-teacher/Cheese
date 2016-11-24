@@ -2,12 +2,16 @@
 //新增POSTING FUNCTION: getpostId > uploadpost > $.uploadfile > youtubelink > codeshow
 //查看POSTING FUNCTION: getpost> getcomment > createfullpost 
 //新增Comment FUNCTION: autogrow > insertcomment > createcomment
+//posting上面的下拉選單:contextmenu>
 //初始化-->-------------------------------
 var init=function(courseid){//一進入討論區時的動作
     console.log('initing...');
     initposting();
     live_init();
     pretest_init();
+    userrecord("p");
+    userrecord("c");
+
 
     createtime();
     createoption(courseid);
@@ -15,6 +19,33 @@ var init=function(courseid){//一進入討論區時的動作
 };
 var courseid;
 var numm = "";
+var user_postrecord={};
+var user_commrecord={};
+
+function userrecord(type){
+  $.ajax({
+    url:'/routes/record',
+    type:'post',
+    data:{type:type},
+    async:false,
+    success:function(data){
+      if(type=="p"){
+        for(var a =0;a<data.length;a++){
+          var tmp=data[a].Id.toString()
+          user_postrecord[tmp]=[]
+          user_postrecord[tmp].push(tmp) ;
+        }
+        console.log(user_postrecord);
+      }else if(type=="c"){
+        for(var a =0;a<data.length;a++){
+          var tmp=data[a].Id.toString();
+          user_commrecord[tmp]=tmp;
+        }
+      } 
+    },
+    error:function(data){console.log("record error")}
+  });
+};
 function changecourse(coursename,courseid,departmentid){
 	alert(departmentid);
 	
@@ -89,11 +120,7 @@ function autogrow(textarea){             //自動調整textbox大小
     }
 };
 function gridlayout(){
-    var start = 0;
-    var end = 0;
-    start = new Date().getTime();
     $grid.masonry('layout');
-        end = new Date().getTime();
 };
 
 function deletecomment(id){
@@ -282,30 +309,42 @@ function createposting (data,direct){
         if(direct=="showbox")
             var typesetting='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"></h4>';
         else
-            var typesetting='<div class="grid-item a grid-width " data-postid="'+data[a].Id+'">';
-             typesetting+='<div class="posting-one " style="width:100%">';
-               typesetting+='<div class="posting-one-img ">';
+            var typesetting='<div class="grid-item a grid-width " id="p'+data[a].Id+'" data-postid="'+data[a].Id+'">';
+             typesetting+='<div class="posting-one " style="width:100%" data-postid="'+data[a].Id+'">';
+               typesetting+='<div class="posting-one-imgcontent ">';
+                 typesetting+='<div class="posting-one-img "></div>';
                typesetting+='</div>';
                typesetting+='<div class="posting-one-type " >';
-                 typesetting+='<span class="posting-one-t">['+data[a].type+']</span><span>'+data[a].title+'</span>';
+                 typesetting+='<div >';
+                   typesetting+='<span class="posting-one-t">['+data[a].type+'] '+data[a].title+'</span>';
+
+                 //藍色下拉選單 new2
+                 typesetting+='<div style="display:inline-block;margin-left:10px;"><i class="fa fa-caret-square-o-down" aria-hidden="true" style="font-size:18px;color:#64A7FE" data-type="post"></i>';
+                 typesetting+='<div class="posting-one-menu" ></div>';
+                 typesetting+='</div>';
+                 typesetting+='</div>';
                  typesetting+='<div>';
                    typesetting+='<span class="posting-one-date">'+postdate+'</span>';
+
                  typesetting+='</div>';
                typesetting+='</div>';
              typesetting+='</div>';
              //>new
              typesetting+='<div class="posting-bar " style="width:100%">';
              typesetting+='<div class="" style="width:86%; display:inline-block;">';
-             if(isNaN(percent1)&&isNaN(percent2))
-              typesetting+='<div class="posting-grey" style="display:inline-block;background-color:#E1E1E1;height:5px;width:100%;"></div>';
+             //new2
+             if(isNaN(percent1)&&isNaN(percent2)){
+              typesetting+='<div class="posting-green" style="display:inline-block;background-color:#E1E1E1;height:5px;width:50%;"></div>';
+              typesetting+='<div class="posting-red" style="display:inline-block;background-color:#E1E1E1;height:5px;width:50%;"></div>';
+             }              
              else{
               typesetting+='<div class="posting-green" style="display:inline-block;background-color:#3BFE5C;height:5px;width:'+x+'%;"></div>';
               typesetting+='<div class="posting-red" style="display:inline-block;background-color:#FE3B3B;height:5px;width:'+y+'%;"></div>';
               }
              typesetting+='</div>';
              typesetting+='<div class="" style="display:inline-block;width:14%">'
-             typesetting+='<img src="/images/code-ico.png" style="height:30px;width:30px;" onclick="score('+data[a].Id+',\'p\',\'nice\')">';
-            typesetting+='<img src="/images/code-ico.png" style="height:30px;width:30px;"onclick="score('+data[a].Id+',\'p\',\'bad\')">';
+             typesetting+='<i class="fa fa-smile-o" aria-hidden="true" style="height:30px;width:30px;font-size:20px" onclick="score('+data[a].Id+',\'p\',\'nice\')"></i>';
+            typesetting+='<i class="fa fa-frown-o" aria-hidden="true" style="height:30px;width:30px;font-size:20px"onclick="score('+data[a].Id+',\'p\',\'bad\')"></i>';
              typesetting+='</div></div>';
              //<new
              typesetting+='<div class="posting-two" data-postid="'+data[a].Id+'">';
@@ -385,17 +424,21 @@ function createposting (data,direct){
 };
 function createcomment(comment,direct){
         for (var a =0;a<comment.length;a++){
-        typesetting="<div class='comm b' style='width:100%;'  >";
+        typesetting="<div class='comm b' id='c"+comment[a].Id+"' style='width:100%;' data-commid='"+comment[a].Id+"' >";
         //留言左邊
-         typesetting+="<div class='comm_one ' style='display:inline-block'>";
-         typesetting+="<div class='comm_one_pic '></div>";
+
+         typesetting+="<div class='comm_one '  style='display:inline-block'>";
+         typesetting+="<div class='comm_one_pic '>";
+         typesetting+='<div><i class="fa fa-caret-square-o-down" aria-hidden="true" style="font-size:18px;color:#64A7FE;position:relative;left:43px;top:35px" data-type="comm"></i></div>';
+         typesetting+="</div>";
          //>new
         var percent1=(comment[a].nice/(comment[a].bad+comment[a].nice)).toFixed(2)*100;
         var percent2=(comment[a].bad/(comment[a].bad+comment[a].nice)).toFixed(2)*100;
         var nbvalue=comment[a].nice-comment[a].bad;
          typesetting+="<div class='comm_one_bar '>";
         if(isNaN(percent1)&&isNaN(percent2)){
-         typesetting+='<div class="posting-grey" style="display:inline-block;background-color:#E1E1E1;height:5px;width:100%;"></div>';
+         typesetting+="<div class='comm_one_green ' style='display:inline-block;width:50%;height:100%;background-color:#E1E1E1'></div>";
+         typesetting+="<div class='comm_one_red ' style='display:inline-block;width:50%;height:100%;background-color:#E1E1E1'></div>";
         }else{
          typesetting+="<div class='comm_one_green ' style='display:inline-block;width:"+percent1+"%;height:100%;background-color:#3BFE5C'></div>";
          typesetting+="<div class='comm_one_red ' style='display:inline-block;width:"+percent2+"%;height:100%;background-color:#FE3B3B'></div>";
@@ -406,15 +449,18 @@ function createcomment(comment,direct){
          else if(nbvalue<0)
            typesetting+="<div class='comm_score' style='color:#FE4949'>"+nbvalue+"</div>";
          else
-              typesetting+="<div class='comm_score' >"+nbvalue+"</div>";
+              typesetting+="<div class='comm_score' >0</div>";
          typesetting+="<div class='comm_one_button'>";
-         typesetting+='<img src="/images/youtube-ico.png" style="height:20px;width:20px;margin-right:2px" onclick="score('+comment[a].Id+',\'c\',\'nice\')"></img>';
-         typesetting+='<img src="/images/youtube-ico.png" style="height:20px;width:20px;" onclick="score('+comment[a].Id+',\'c\',\'bad\')"></img>';
+         typesetting+='<i class="fa fa-smile-o" aria-hidden="true" style="height:20px;width:20px;margin-right:2px;font-size:14px" onclick="score('+comment[a].Id+',\'c\',\'nice\')"></i>';
+         typesetting+='<i class="fa fa-frown-o" aria-hidden="true"  style="height:20px;width:20px;font-size:14px" onclick="score('+comment[a].Id+',\'c\',\'bad\')"></i>';
+
          //<new
          typesetting+="</div></div>";
          //留言內容
-         typesetting+="<div class='comm_two ' style='display:inline-block'>"
+         typesetting+="<div class='comm_two ' style='display:inline-block'>";
+
              typesetting+="<div  class='comm_two_content ' style=''><span >"+comment[a].content+"</span>";
+
              typesetting+="</div>";
              //留言圖片
              
@@ -575,20 +621,26 @@ function getpostId(){
 };
 //發文時取得最新ID <------------------------------
 //更多文章功能-->-------------------------
-function moreposting(postid,courseid){
+function moreposting(type,postid){
+//new2>
     $.ajax({
         url:"/routes/more/",
         type:"POST",
-        data:{postid:postid},
+        data:{type:type,postid:postid},
         success :function(data){
-                console.log("成功從伺服器取得morePOSTINT資料");
-                console.log(data);
-                createposting(data,"append");
+          if(data.length!=0){
+            console.log("成功從伺服器取得morePOSTINT資料",data);
+            createposting(data,"append");}
+          else{
+            $("#post_more").prop({"value":"已經全部顯示","disabled":"true"})
+            }
+
         },
         error:function(data){
             console.log("fail",data);
         }
     });
+//<new
 }
 //更多文章功能<---------------------------
 //把發文資料insert 到sql 裡------------
@@ -782,33 +834,74 @@ function pretest_create(data){
         var ft=data[a].filetype;
         var pic="";
 
+      typesetting+="<div class='pretest_abc' style=''>";//把一個考古題包起來的DIV
+
+        if(ft!="jpg"&&ft!="JPG"&&ft!="JEPG"&&ft!="jpeg"&&ft!="png"&&ft!="PNG"&&ft!="gif"&&ft!="GIF"){
+        typesetting+='<span class="pretest_a" style="">'+fn+'</span>'; //顯示檔名, 圖片不顯示檔名
+        }
+
+        
         if(ft=="docx"||ft=="DOCX"||ft=="doc"||ft=="DOC"){
-            pic='word-ico.png';
-            typesetting+="<img src='/images/"+pic+"' style='height:90% ;width:120px;margin-right:2%'>";
+            typesetting+="<a href='/pretest/pretestdownload?fn="+fn+"'>";
+            typesetting+="<div class='pretest_b pretest_img1 pretest_hov'>";
+            typesetting+="</div>"; 
+                        typesetting+="</a>";
+
         }
         else if(ft=="pptx"||ft=="PPTX"){
-            pic='powerpoint-ico.jpg';
-            typesetting+="<img src='/images/"+pic+"' style='height:90%;width:120px;margin-right:2%'>";
+            typesetting+="<a href='/pretest/pretestdownload?fn="+fn+"'>";
+            typesetting+="<div class='pretest_b pretest_img2 pretest_hov'>";
+            typesetting+="</div>";
+            typesetting+="</a>";
+
         }
-        else if(ft=="word"||ft=="WORD"){
-            pic='word-ico.png';
-            typesetting+="<img src='/images/"+pic+"' style='height:90%;width:120px;margin-right:2%'>";
+        else if(ft=="zip"||ft=="ZIP"){
+            typesetting+="<a href='/pretest/pretestdownload?fn="+fn+"'>";
+            typesetting+="<div class='pretest_b pretest_img3 pretest_hov'>";
+            typesetting+="</div>";
+            typesetting+="</a>";
+
         }
         else if(ft=="jpg"||ft=="JPG"||ft=="JEPG"||ft=="jpeg"||ft=="png"||ft=="PNG"||ft=="gif"||ft=="GIF"){
             pic=fn;
-            typesetting+="<img src='/images/"+pic+"' style='height:90%;width:120px;margin-right:2%'>";
+            typesetting+="<div class='pretest_b2 pretest_imgfunction' data-id="+data[a].id+">";
+            typesetting+='<a class="single" href="/images/'+fn+'">';
+            typesetting+="<img  class='' src='/images/"+pic+"' style='height:100%;width:100%' data-id="+data[a].id+"></a>";
+            typesetting+='</div>';  
+            typesetting+='<div id="prehid_'+data[a].id+'" class="pretest_a pretest_hiddenfn pretest_imgfunction"><span>'+fn+'</span></div>';
+
         }
-        else{//new
-          pic='file-ico.ico';
-          typesetting+='<div >';
-          typesetting+="<img src='/images/"+pic+"' style='height:90px;width:80px;margin-right:2%'>";
-          typesetting+="<br/><span >"+fn+"</span>";
-          typesetting+='</div>';
-        }//new
+        else{
+          pic='';
+          typesetting+="<a href='/pretest/pretestdownload?fn="+fn+"'>";
+          typesetting+="<div class='pretest_b pretest_img4 pretest_hov'>";
+          typesetting+='</div>';  
+          typesetting+="</a>";
+
+
+        }
+
+        if(inthreeday(data[a].date)){
+          typesetting+="<div class='pretest_c'>";
+          typesetting+="<span style='color:#ffffff;'>&nbsp; NEW</span></div>";
+        }
+
+        typesetting+="</div>";
+
     }
     $("#pretest_div").append(typesetting);
     
 };
+function inthreeday(date){
+  var now=new Date();
+  var dd=new Date(date);
+  var between=Math.floor((now-dd)/(1000*60*60*24));
+  if(between<=2)
+    return true;
+  else
+    return false;
+
+}
 //> new 
 
 function score(targetid,type,button){
@@ -818,11 +911,8 @@ function score(targetid,type,button){
     type:'post',
     data:{targetid:targetid,type:type,value:button},
     success:function(data){
-      var exist;
-      console.log(data);
       if(data!="clicked"){
         if(data=="p"){
-            console.log("p");
             var postd=getpost(targetid);
             //$(this).parents('posting-bar').css("background-color","#EA1414");
             var bar=$('#s'+targetid).parents(".grid-item").find(".posting-bar");
@@ -830,18 +920,43 @@ function score(targetid,type,button){
             var red=bar.find('.posting-red');
             var nice=postd.nice/(postd.nice+postd.bad).toFixed(2)*100;
             var bad=postd.bad/(postd.nice+postd.bad).toFixed(2)*100;
-            green.css("width",nice+"%");
-            red.css("width",bad+"%");
+            var a,b;
+
+            green.css({"background-color":"#3BFE5C","width":nice+"%"});
+            red.css({"background-color":"#FE3B3B","width":bad+"%"});
 
         }else if(data=="c"){
-            console.log("c");
             $.ajax({
-            url: '/routes/getcommentbyid',
-            data:   { data: targetid },
-            type : 'POST',
-            success: function (response) {
-                console.log(response);
+              url: '/routes/getcommentbyid',
+              data:   { data: targetid },
+              type : 'POST',
+              success: function (comment) {
+                var green=$('#c'+targetid).find('.comm_one_green');
+                var red=$('#c'+targetid).find('.comm_one_red');
+                var nice =comment[0].nice/(comment[0].nice+comment[0].bad).toFixed(2)*100;
+                var bad=comment[0].bad/(comment[0].nice+comment[0].bad).toFixed(2)*100;
+
+                var mark=comment[0].nice-comment[0].bad;
+
+                if(isNaN(mark))
+                  mark=0;
+              
+                if(mark>0){
+                  $('.comm_score').text("+"+mark).css("color","#49AAFE");
+                  green.css({"background-color":"#3BFE5C","width":nice+"%"});
+                  red.css({"background-color":"#FE3B3B","width":bad+"%"});
+                }else if(mark<0){
+                  $('.comm_score').text(mark).css("color","#FE4949");
+                  green.css({"background-color":"#3BFE5C","width":nice+"%"});
+                  red.css({"background-color":"#FE3B3B","width":bad+"%"});
+                }else{
+                  $('.comm_score').text("0").css("color","#E1E1E1");
+                  green.css({"background-color":"#E1E1E1","width":"50%"});
+                  red.css({"background-color":"#E1E1E1","width":"50%"});
                 }
+
+
+              }
             });
         }
       }
@@ -849,13 +964,69 @@ function score(targetid,type,button){
     error:function(data){console.log(data);}
   });
 }
-function getcommentbyid(commid){//跟據COMMID 取得COMMENT 的資料
-
+function pt_change(dom){
+  var dom2;
+  var domelem=$(this);
+  if(dom=="hotest"){
+    dom2="newest";
+    $("#"+dom+"-btn").prop("disabled","true");
+    $("#"+dom2+"-btn").prop("disabled","");
+    $("#post_more").data("type","hotest").prop({"value":"更多文章","disabled":""});
+    $(".grid").html("");
+    postingchange(dom);
+  }else if(dom=="newest"){
+    dom2="hotest";
+    $("#"+dom+"-btn").prop("disabled","true");
+    $("#"+dom2+"-btn").prop("disabled","");
+    $("#post_more").data("type","newest").prop({"value":"更多文章","disabled":""});
+    $(".grid").html("");
+    postingchange(dom);
+  }
+  
+}
+function postingchange(type){
+  $.ajax({
+    url:"/routes/postchange",
+    type:"post",
+    data:{type:type},
+    success:function(data){
+      console.log(data);
+      if(data.length!=0){  
+        createposting(data,"append");
+        gridlayout();
+      }
+      else{
+        var $typesetting="<div class='a' style='width:90%;height:10%'><p style='position:inherit;margin:15% 40%'>目前沒有熱門的文章哦</p></div>";
+        $grid.append($typesetting).masonry( 'appended', $typesetting );
+                gridlayout();
+      }
+    },
+    error:function(data){console.log(data);}
+  });
 }
 //< new
+
+//jquerystart
 $(function (){
-    //var socket = io('/Chatroom');
+    var socket = io('/Chatroom');
     courseid=$('#hidden_data').data("courseid");
+//socketpart
+
+/*join room 例子
+    socket.emit('joinroom',{'data':courseid});//使用者進入網頁時 把SOCKET加進ROOM裡面 以課號來區分ROOM
+
+    socket.on('joined',function(data){//當有其他使用者進入相同ROOM,會APPEND以下面的P
+      $('.socketdiv').append("<p>使用者進入了ROOM:"+data.roomid+"</p>");
+    });
+
+    $('.socketbutton').click(function(){ //使用者發文時,告知SERVER 有發文
+      socket.emit('c_send');
+    });
+
+    socket.on('s_send',function(data){  //SER 發出有其他使用者發文，作出相應動作顯示
+      $('.socketdiv').append("<p>ROOM:"+data.data+"新文章</p>")
+    });
+join room 例子 */
     init(courseid);
 	 getcoursename();   //samchange
     //當BOOTSTRAP 圖片輪播時 觸發MASONY 重新排版
@@ -875,7 +1046,112 @@ $(function (){
     });
     //youtube API 載入
 
+     $.contextMenu({
 
+        selector: ".fa-caret-square-o-down",//被左鍵的對像
+        trigger:"left",//觸發鍵:LEFT/RIGHT
+        autoHide:"true",//滑鼠移開選單會動隱藏
+        //選單內容
+        items: {
+          a:{
+            name:"編輯",icon:"fa-caret-square-o-down",//選單text ico
+            visible:function(key,opt){
+              var type=$(this).data("type");
+              //先判斷是post 的選單還是comm選單
+              if(type=="post"){//post選單情況
+                //抓出被點到的 posting id出來
+                var id;
+                if($(this).parents(".grid-item").data("postid")==undefined){
+                  id=$(this).parents(".posting-one").data("postid").toString();
+                }else{
+                  id=$(this).parents(".grid-item").data("postid").toString();
+                }
+                //判斷 抓出來的id  使用者 == 發文者 ?
+                if(typeof(user_postrecord[id])!="undefined")
+                  return true;  //顯示 這個按鈕
+                else 
+                  return false; //不顯示 這個按鈕
+              }else if(type=="comm"){//comm選單情況
+                //抓出被點到的comm id 出來
+                var id=$(this).parents(".comm").data("commid").toString();
+                //判斷commid  使用者==留言者?
+                if(typeof(user_commrecord[id])!= undefined)
+                  return true; //顯示 這個按鈕
+                else
+                  return false;//不顯示 這個按鈕
+              }
+
+            },
+            callback:function(itemKey,opt){
+
+            }
+          },
+
+          b:{
+            name:"刪除",icon:"fa-caret-square-o-down",
+            visible:function(key,opt){
+              var type=$(this).data("type");
+              if(type=="post"){
+                var id;
+                if($(this).parents(".grid-item").data("postid")==undefined){
+                  id=$(this).parents(".posting-one").data("postid").toString();
+                }else{
+                  id=$(this).parents(".grid-item").data("postid").toString();
+                }
+                if(typeof(user_postrecord[id])!= "undefined")
+                  return true;
+                else 
+                  return false;
+              }else if(type=="comm"){
+                var id=$(this).parents(".comm").data("commid").toString();
+                if(typeof(user_commrecord[id])!= undefined)
+                  return true;
+                else
+                  return false;
+              }
+            },
+            callback:function(itemKey,opt){
+              var type=$(this).data('type');
+              if(type=="post"){
+                var id=$(this).parents(".grid-item").prop("id");
+                $.ajax({
+                  url:'/routes/delete/post',
+                  type:"post",
+                  data:{id:id},
+                  success:function(data){
+                     $grid.masonry( 'remove',$('#'+id))
+                      .masonry('layout');
+                  }
+                });
+              }else if(type=="comm"){
+                var id=$(this).parents(".comm").data("commid");
+                var th=$(this);
+                $.ajax({
+                  url:'/routes/deletecomment',
+                  data:{data:id},
+                  type:"post",
+                  success:function(data){
+                    th.parents(".comm").siblings("hr").first().fadeOut();
+                    th.parents(".comm").fadeOut();
+
+                  },
+                  error:function(data){console.log("fail");}
+                });
+              }
+              
+            }
+            },
+          c:{
+            name:"檢舉",icon:"fa-caret-square-o-down",
+            visible:function(key,opt){
+              return true;
+              },
+            callback:function(itemKey,opt){alert("a");}
+          },
+
+            }
+        // there's more, have a look at the demos and docs...
+    });
 
 
 
@@ -1253,10 +1529,9 @@ $(function (){
 
     //更多文章按鈕-->------------------------------------
     $("#post_more").click(function(){
-        
         var a=$("#divshow").find(".grid-item").last().data("postid");
-        console.log(a);
-        moreposting(a);
+        var type=$(this).data("type");
+        moreposting(type,a);
         
     });
     //更多文章按鈕<--------------------------------------
@@ -1282,6 +1557,21 @@ $(function (){
         console.log("no img");
       
     });
+
+  $(document.body).on('mouseenter',".pretest_imgfunction",function(event){
+    var id=$(this).data().id;
+    
+    setTimeout(function(){
+    $('#prehid_'+id).fadeIn();
+
+    },1000);
+    setTimeout(function(){
+    $('#prehid_'+id).fadeOut();
+
+    },4000);
+  });
+  
+
 
 });//end of $(function(){});
     function aa(){

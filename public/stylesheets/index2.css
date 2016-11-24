@@ -114,24 +114,35 @@ div{
 	float:left;
 
 }
-
+.posting-one{
+}
+.posting-one-imgcontent{
+	display: inline-block;
+		padding:0px;
+		margin:0px;
+		min-width:12%;
+}
 .posting-one-img{
 	height:50px;
 	width:50px;
 	background-color:#ED6976;
 	border-radius:30px;
 	margin:10px 10px 0px 10px;
-	display:inline-block;
+
 }
 .posting-one-type{
-	 width:80%;
-	 display:inline-block;
+	display: inline-block;
+	 width:75%;
 	 word-break:break-all;
+	 position:relative;
+	 top:-15px;
+	 margin:0px;
+	 padding:0px;
 
 }
 .posting-one-t ,{
 	font-size:14px;
-	font-weight:700;
+	font-weight:900;
 }
 .posting-one-date{
 	color:#E6E6E6;
@@ -235,13 +246,13 @@ div{
 }
 .comm_two{
 	position:relative;
-	top:1px;
-	margin:1% 0% 1% 3%;
+	top:-30px;
+	margin:0% 0% 0% 5%;
 }
 .comm_two_content{
 	font-size: 18px;
 	position:relative;
-	top:-100px;
+	top:-75px;
 }
 
 .comm_three_pic{
@@ -266,4 +277,79 @@ div{
 }
 hr{
 	border-color:#C7C7C7;
+}
+.pretest_abc{
+	position:relative;
+	display:inline-block;
+	height:150px;
+	width:90px;
+	margin-right:2%;
+}
+.pretest_a{
+	display:block;
+	position:absolute;
+	white-space:normal; 
+	word-break:break-all;
+	height:120px;
+	width:90px;
+	background-color:#282828;
+	z-index:2;
+	border:2px solid #D8D8D8;
+	border-radius: 20px;
+	padding:10px;
+	padding-bottom:30px;
+	color:#ffffff;
+	font-weight: 700;
+	overflow:hidden;
+	box-shadow:0px 0px 40px  10px rgba(0, 0, 0, .5) inset;
+	text-shadow:0 1px 8px rgba(255, 255, 255, .5)
+}
+.pretest_b{
+	position:absolute;
+	height:50px;
+	width:50px;
+	border:2px solid #ffffff;
+	border-radius:60px;
+	bottom:5px;
+	right:1px;
+	z-index:4;
+
+}
+.pretest_b2{
+	position:absolute;
+	width:90px;
+	height:120px;
+	padding:10px;
+	border-radius:20px;
+	border:1px solid #000000;
+	z-index:3;
+}
+.pretest_hiddenfn{
+z-index:3;
+display:none;
+}
+.pretest_img1{background-image: url('/images/wd-ico.png');}
+.pretest_img2{background-image: url('/images/ppt-ico.jpg');}
+
+.pretest_img3{background-image: url('/images/zip-ico.png');}
+.pretest_img4{background-image: url('/images/file-ico.png');}
+
+.pretest_hov:hover{
+	background-image: url('/images/download-ico.png');
+   	 opacity: 0.85;
+	 transition: opacity .9s ease-in-out;
+   -moz-transition: opacity .9s ease-in-out;
+   -webkit-transition: opacity .9s ease-in-out;
+
+}
+.pretest_c{
+	display:inline-block;
+	width:90%;
+	position:absolute;
+	top:100px;
+	height:20px;
+	z-index:3;
+	background-color:#FE1E1E;
+		box-shadow:0px 0px 5px  1px rgba(255, 255, 255, .5) inset;
+	border-radius:7px;
 }
