@@ -671,4 +671,6 @@ router.post("/getcommentbyid",function(req,res){
 	});
 });
 //<new
+//game routes
+
 module.exports = [router, io_Chatroom];
