@@ -6,7 +6,7 @@ var path=require('path');
 var util=require('util');
 var url = require('url');
 var mysql = require('mysql');
-var config = require("../lib/config.js");
+
 var multer = require('multer'); // v1.0.5
 var upload = multer(); // for parsing multipart/form-data
 
@@ -28,7 +28,7 @@ var num=0;
 
 router.get('/', function(req, res, next) {
 	
-    res.render('./views/mainpage', { title: '主頁' ,url:config.url});
+    res.render('./views/mainpage', { title: '主頁' });
 });
 
 router.post('/findpostid', upload.array(),function(req, res , next){
