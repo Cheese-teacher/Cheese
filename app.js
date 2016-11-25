@@ -30,7 +30,6 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var routes = require('./routes/index.js');
 var pretest=require('./routes/pretest.js');
-var mainpage=require('./routes/mainpage.js');
 var selectcourse = require('./routes/selectcourse.js');
 
 var hotpage = require('./routes/hotpage.js');

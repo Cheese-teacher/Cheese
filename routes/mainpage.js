@@ -6,6 +6,8 @@ var path=require('path');
 var util=require('util');
 var url = require('url');
 var mysql = require('mysql');
+var config = require("../lib/config.js");
+
 
 var multer = require('multer'); // v1.0.5
 var upload = multer(); // for parsing multipart/form-data
@@ -19,7 +21,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 	  password : 'admin',
 	  database : 'hackmd'
 	});
-	
+
 /* GET home page. */
 var num=0;
 
@@ -27,8 +29,8 @@ var num=0;
 //new
 
 router.get('/', function(req, res, next) {
-	
-    res.render('./views/mainpage', { title: '主頁' });
+
+    res.render('./views/mainpage', { title: '主頁',url:config.url });
 });
 
 router.post('/findpostid', upload.array(),function(req, res , next){
@@ -38,9 +40,9 @@ router.post('/findpostid', upload.array(),function(req, res , next){
 	}
 	else{
 		var sql="";
-	/* 
+	/*
 		(select * from hackmd.posting where departmentId="1" order by viewcount desc,date desc limit 5)
-		union 
+		union
 		(select * from hackmd.posting where departmentId="13" order by viewcount desc,date desc limit 5)
 	*/
 	var abc="";
@@ -68,14 +70,14 @@ router.post('/findpostid', upload.array(),function(req, res , next){
 		//檢查是否有錯誤
 			if(error){
 				throw error;
-			}	
+			}
 			if(rows.length==0){
 				res.send(rows);
 			}
 			else{
 				var course=' postId = "'+rows[0].Id+'"';
 				for(var i=1;i<rows.length;i++){
-		
+
 					course+=' OR postId = "'+rows[i].Id+'"';
 				}
 
@@ -87,7 +89,7 @@ router.post('/findpostid', upload.array(),function(req, res , next){
 				connection.query(sql ,function(error, rowss, fields){
 				//檢查是否有錯誤
 					if(error){
-			
+
 						throw error;
 					}
 					var truerows=new Object();
@@ -95,7 +97,7 @@ router.post('/findpostid', upload.array(),function(req, res , next){
 					for(var i=0;i<rowss.length;i++){
 						for(var j=0;j<rows.length;j++){
 							if(rows[j].Id==rowss[i].postId){
-								
+
 								truerows[count]=rows[j];
 								console.log(truerows[count]);
 								count++;
@@ -103,48 +105,48 @@ router.post('/findpostid', upload.array(),function(req, res , next){
 							}
 						}
 					}
-					
-					
+
+
 					res.send(truerows);
 				});
 			}
 	});
 */
 	}
-	
+
 });
 
 router.post('/showpost', upload.array(),function(req, res , next){
-	
-	
-	
+
+
+
 	var yourcourse=req.body.yourcourse;
-	
-	
-	
-	
+
+
+
+
 	var course=' postId = "'+yourcourse[0].Id+'"';
-	
+
 	for(var i=1;i<yourcourse.length;i++){
-		
+
 		course+=' OR postId = "'+yourcourse[i].Id+'"';
 	}
-	
+
 	connection.query('SELECT  postId, COUNT(*) AS hm from comment where '+course+ ' GROUP BY postId ORDER BY COUNT(*) DESC LIMIT 5 ' ,function(error, rows, fields){
 		//檢查是否有錯誤
 			if(error){
-			
+
 				throw error;
-			}	
-			
+			}
+
 			res.send(rows);
 		});
-		
-		
+
+
 	//res.end();
-	
-	
-	
+
+
+
 });
 
 router.post('/insertdepartment', upload.array(),function(req, res , next){
@@ -155,64 +157,64 @@ router.post('/insertdepartment', upload.array(),function(req, res , next){
 		//檢查是否有錯誤
 		if(error){
 			throw error;
-		}	
+		}
 		res.send(rows);
 	});
 });
 
 
 router.post('/setsession', upload.array(),function(req, res , next){
-	
+
 	var classid=req.body.classid;
 	var departmentid=req.body.departmentid;
 	req.session.courseid=classid;
 	req.session.departmentid=departmentid;
-	
-	
+
+
 	res.end();
 });
 
 
 router.post('/yourcourse', upload.array(),function(req, res , next){
-	
+
 	connection.query(' SELECT * from users where id = "'+req.session.passport.user+'" '  ,function(error, rows, fields){
 		//檢查是否有錯誤
 		if(error){
 			throw error;
-		}	
+		}
 		res.send(rows);
 	});
-	
+
 });
 
 router.post('/yourcourseinfo', upload.array(),function(req, res , next){
 	var yourcourse=req.body.yourcourse;
 	var coursearray=new Array();
 	coursearray=yourcourse.split("|");
-	
+
 	var course=' Class = "'+coursearray[0]+'"';
-	
+
 	for(var i=1;i<coursearray.length-1;i++){
-		
+
 		course+=' OR Class = "'+coursearray[i]+'"';
 	}
-	
-	
-	
+
+
+
 	connection.query(' SELECT * from class where '+course+' '  ,function(error, rows, fields){
 		//檢查是否有錯誤
 		if(error){
 			throw error;
-		}	
-		
+		}
+
 		req.session.courseinfo=rows;
 		res.send(rows);
-		
-		
+
+
 	});
-	
+
 	//res.end();
-	
+
 });
 router.post('/bannerinsert',function(req,res){
 	var data=new Object();
@@ -222,11 +224,11 @@ router.post('/bannerinsert',function(req,res){
 		//檢查是否有錯誤
 		if(error){
 			throw error;
-		}	
-		
+		}
+
 		res.end();
 		});
-		
+
 });
 router.post('/bannerinit',function(req,res){
 	var sql="SELECT * FROM banner";
@@ -234,10 +236,10 @@ router.post('/bannerinit',function(req,res){
 		//檢查是否有錯誤
 		if(error){
 			throw error;
-		}	
-		
+		}
+
 		res.send(rows).end();
 		});
-		
+
 });
 module.exports = router;
