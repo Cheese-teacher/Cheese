@@ -10,7 +10,7 @@ var mysql = require('mysql');
 var session = require('express-session');
 var multer = require('multer'); // v1.0.5
 var upload = multer(); // for parsing multipart/form-data
-
+var config = require("../lib/config.js");
 router.use(bodyParser.json()); // for parsing application/json
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -83,7 +83,7 @@ router.get('/course/', function(req, res, next) {
 		req.session.reload(function(err) {})
   // session updated
 		console.log("有SESSION",req.session);
-		res.render('./views/index2', {courseid:req.session.courseid,user:req.session.username});
+		res.render('./views/index2', {courseid:req.session.courseid,user:req.session.username,url:config.url});
 	}
     
 });

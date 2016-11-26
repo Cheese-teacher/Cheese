@@ -33,9 +33,9 @@ var pretest=require('./routes/pretest.js');
 var mainpage=require('./routes/mainpage.js');
 var selectcourse = require('./routes/selectcourse.js');
 
+var gameweb=require('./routes/gameweb.js');
 var hotpage = require('./routes/hotpage.js');
 var mysql = require('mysql');
-var mainpage = require('./routes/mainpage.js');
 var notelist=require('./public/js/note.js');
 var onlineCount = 0;
 //server setup
@@ -129,7 +129,7 @@ app.use(helmet.hsts({
 // static files
 app.use('/', express.static(__dirname + '/public', { maxAge: config.staticcachetime }));
 app.use('/vendor/', express.static(__dirname + '/bower_components', { maxAge: config.staticcachetime }));
-
+app.use('/routes', express.static(__dirname + '/routes'));
 //session
 app.use(session({
     name: config.sessionname,
@@ -147,10 +147,11 @@ app.use(session({
 //app.use('/socket', express.static(__dirname + '/node_modules/socket.io/lib'));
 app.use('/routes', routes[0]);
 app.use('/mainpage', mainpage);
+app.use('/gameweb', gameweb);
 app.use('/notelist', notelist);
 app.use('/pretest',pretest);
 app.use('/selectcourse', selectcourse);
-app.use('/mainpage',mainpage);
+
 
 // session resumption
 var tlsSessionStore = {};

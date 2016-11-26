@@ -6,6 +6,8 @@
   <title>
   </title>
 
+ <link rel="stylesheet" href="<%- url %>/stylesheets/demu/barrager.css">
+<link rel="stylesheet" href="<%- url %>/stylesheets/demu/bootstrap.min.css" media="screen" />
 <!--JQUERY js-->
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
     crossorigin="anonymous"></script>
@@ -31,7 +33,7 @@
 <link rel="stylesheet" href="/javascripts/font-awesome-4.7.0/css/font-awesome.min.css">
   <script src="/javascripts/bootbox.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/index2.css'/>
-
+    
     <style>
     .abb{color:red;}
 
@@ -111,18 +113,29 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <b class="caret"></b>
               </a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu classselect">
                 
               </ul>
             </li>
           </ul>
           <div class="collapse navbar-collapse" id="option">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="/routes/course">討論區</a></li>
-              <li ><a href="/pretest/course/">考古題</a></li>
-              <li ><a href="#">筆記</a></li>
+                <li class="active"><a href="/routes/course">討論區</a></li>
+                <li ><a href="/pretest/course/">考古題</a></li>
+                <li ><a href="#">筆記</a></li>
+                <li class="dropdown">
+                    <a href="#" data-target="#" class="gameselect" data-toggle="dropdown">
+                    遊戲
+                    <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ><a class='ui-single' data-target=".singlequestion-modal" data-toggle='modal' >單題發問</a></li>
+                        <li ><a href="/gameweb">遊戲區</a></li>
+                    </ul>
+               </li>
             </ul>
           </div>
+          
     </div>
   </nav>
   <!--頂置欄-->
@@ -198,6 +211,7 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
+<%- include singlequestion-modal %>
 <!--posting-two-button 所顯示的小視窗-->
 <script>
         $(document).on("click", "#abc", function(e) {
@@ -238,7 +252,12 @@
      <script src="/javascripts/pretty/prettify.js"></script>
 
     <link rel="stylesheet" id="gridcss" href="/stylesheets/grid1.css">
+    
+    <!--彈木---->
+<script src="<%- url %>/javascripts/demu/tinycolor-0.9.15.min.js" ></script> 
+<script src="<%- url %>/javascripts/demu/jquery.barrager.js " ></script>
 
+<script src="<%- url %>/javascripts/routes/singledemu.js"></script>
 
 </body>
 
