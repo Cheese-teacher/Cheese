@@ -4,14 +4,11 @@
   "description": "Realtime collaborative markdown notes on all platforms.",
   "main": "app.js",
   "license": "MIT",
-  "scripts": {
-    "start": "nodemon app.js",
-    "postinstall": "./node_modules/bower/bin/bower install"
-  },
   "dependencies": {
     "async": "^2.1.2",
     "blueimp-md5": "^2.3.0",
     "body-parser": "^1.15.2",
+    "bower": "^1.8.0",
     "chance": "^1.0.4",
     "cheerio": "^0.20.0",
     "compression": "^1.6.2",
@@ -80,5 +77,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/hackmdio/hackmd.git"
+  },
+  "scripts": {
+    "start": "nodemon app.js",
+    "postinstall": "./node_modules/bower/bin/bower install"
   }
 }
