@@ -52,20 +52,22 @@
 
                 <div id="home" class="section">
                     <div class="inner cover">
-                        <h1 class="cover-heading"><i class="fa fa-file-text"></i> HackMD</h1>
+                        <h1 class="cover-heading">Cheese 老師 <i class="fa fa-heart" style="color:red"></i> <i class="fa fa-file-text"></i> HackMD</h1>
                         <p class="lead">
                             Realtime collaborative markdown notes on all platforms.
                         </p>
                         <% if(facebook || twitter || github || gitlab || dropbox || google) { %>
                         <a type="button" class="btn btn-lg btn-success ui-signin" data-toggle="modal" data-target=".signin-modal" style="display:none;">Sign In</a>
-                        <div class="ui-or" style="display:none;">Or</div>
+                        <!--<div class="ui-or" style="display:none;">Or</div>-->
                         <% }%>
+                        <!--
                         <p class="lead">
                             <a href="<%- url %>/new" class="btn btn-lg btn-default">New note</a>
-                        </p>
+                        </p>-->
                         <h5>Share directly with URL <i class="fa fa-link"></i></h5>
                         <a class="btn btn-primary" href="<%- url %>/features">More features <i class="fa fa-chevron-right"></i></a>
                     </div>
+                    <br>
                     <br>
                 </div>
 

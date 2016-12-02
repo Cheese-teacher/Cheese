@@ -9,10 +9,6 @@
             "port": "3306",
             "dialect": "mysql"
         },
-        "facebook": {
-            "clientID": "455717244623963",
-            "clientSecret": "11de325d7d06f0f3cbe5b59ca6ccdefa"
-        },
         "google": {
             "clientID": "691848651018-2e1snpc9mnt4m6o0i76g9do5j258jlk4.apps.googleusercontent.com",
             "clientSecret": "wT6fl-Pw2xxhBDIWQabSZoID"

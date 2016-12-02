@@ -31,7 +31,7 @@ var favicon = require('serve-favicon');
 var routes = require('./routes/index.js');
 var pretest=require('./routes/pretest.js');
 var selectcourse = require('./routes/selectcourse.js');
-
+var cheese_index = require('./routes/cheese_index.js');
 var hotpage = require('./routes/hotpage.js');
 var mysql = require('mysql');
 var mainpage = require('./routes/mainpage.js');
@@ -128,6 +128,7 @@ app.use(helmet.hsts({
 // static files
 app.use('/', express.static(__dirname + '/public', { maxAge: config.staticcachetime }));
 app.use('/vendor/', express.static(__dirname + '/bower_components', { maxAge: config.staticcachetime }));
+app.use('/routes', express.static(__dirname + '/public', { maxAge: config.staticcachetime }));
 
 //session
 app.use(session({
@@ -209,6 +210,23 @@ app.set('views', __dirname + '/public');
 app.set('view engine', 'ejs');
 //set render engine
 app.engine('html', ejs.renderFile);
+
+app.use('/cheese_index', function(req, res, next) {
+    if (req.isAuthenticated()) {
+        //res.redirect('/');  //導到筆記首頁
+        res.redirect('/routes/course/');
+    } else {
+        res.render('./views/cheese_index', {
+            url:config.url,
+            facebook: config.facebook,
+            twitter: config.twitter,
+            github: config.github,
+            gitlab: config.gitlab,
+            dropbox: config.dropbox,
+            google: config.google
+        });
+    }
+});
 //get index
 app.get("/", response.showIndex);
 //get 403 forbidden
@@ -387,7 +405,7 @@ app.get('/logout', function (req, res) {
     if (config.debug && req.isAuthenticated())
         logger.info('user logout: ' + req.user.id);
     req.logout();
-    res.redirect(config.serverurl + '/');
+    res.redirect(config.serverurl + '/cheese_index');
 });
 //get history
 app.get('/history', function (req, res) {

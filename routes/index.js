@@ -29,19 +29,40 @@ var io_Chatroom = {
     startConnection:startConnection
 };
 
-
+var room;
 function startConnection(socket){
-  onlineCount++;
+	/*join room 例子
+	socket.on('joinroom',function(data){
+		socket.join(data.data);
+		socket['room']=data.data;//這個變數很重要,是分ROOM的標準(拿課號)，拿來TO/LEAVE的時候備用
+		//socket.to(data.data).emit('joined',{roomid:data.data});
+		socket.broadcast.to(socket['room']).emit('joined',{roomid:data.data});
+	});
+
+	socket.on('c_send',function(data){
+		socket.emit('s_send',{data:socket['room']});
+		socket.broadcast.to(socket['room']).emit('s_send',{data:socket['room']});
+	});
+	socket.on('disconnect',function(a){
+		socket.leave(socket['room']);
+	});
+	join room 例子*/
+
+/*
   socket.emit('someone_login',{'number':onlineCount});
   console.log('有人加入了聊天室');
   console.log('目前在線人數: '+onlineCount);
+
   //When user disconnect
   socket.on('disconnect', function() {
     onlineCount--;
     socket.broadcast.emit('someone_logout',{'number':onlineCount});
     console.log('有人退出了聊天室');
     console.log('目前在線人數: ' + onlineCount);
-  });
+      */
+};
+
+
 /*
   //test if socket still exist connection
   socket.on('but', function(msg) {
@@ -59,10 +80,10 @@ function startConnection(socket){
   });
   */
 
-};
+
 
 router.get('/', function(req, res, next) {
-	
+
     res.redirect('http://localhost:3000/routes/course/');
 });
 
@@ -85,23 +106,22 @@ router.get('/course/', function(req, res, next) {
 		console.log("有SESSION",req.session);
 		res.render('./views/index2', {courseid:req.session.courseid,user:req.session.username});
 	}
-    
+
 });
 
 
 
 router.post('/deletecomment', upload.array(),function(req, res , next){
-	//console.log('aaddffgg');
-	var commentid=req.body.data;	
-	connection.query('delete from comment where Id= ' +commentid+ '' ,function(error, rows, fields){
-		//檢查是否有錯誤
-		if(error){
-			
-			throw error;
-		}	
+	var commentid=req.body.data;
+	connection.query('delete from comment where Id= ' +commentid+ '' ,function(err,result){
+		if(err){
+			console.log(err);
+		}else{
+			res.end();
+		}
 	});
-	res.end();
-	
+
+
 });
 
 router.post('/showcomment', upload.array(),function(req, res , next){
@@ -110,21 +130,23 @@ router.post('/showcomment', upload.array(),function(req, res , next){
 		//檢查是否有錯誤
 		if(error){
 			throw error;
-		}	
+		}
 		res.send(rows);
 	});
-	
+
 });
 
 router.post('/insertcomment', upload.array(),function(req, res , next){
 	var comment=req.body.data;
 	var courseid=req.session.courseid;
 	var postid=req.body.postid;
+	var anonymous=req.body.anonymous;
 	var imglist=req.body.imglist;
 	var code=req.body.code;
 	var commentcontain=new Object();
 	commentcontain.postId=postid;
 	commentcontain.content=comment;
+	commentcontain.anonymous=anonymous;
 	commentcontain.clike=0;
 	commentcontain.owner=req.session.passport.user;
 	commentcontain.imglistc=imglist;
@@ -144,7 +166,7 @@ router.post('/insertcomment', upload.array(),function(req, res , next){
 			console.log(err);
 			console.log(' 新增comment失敗');
 		}
-		
+
 	});
 	console.log("posid",postid,"有一個新回覆:");
 	console.log(commentcontain);
@@ -170,7 +192,7 @@ router.get('/init/',function(req,res){//初始化，讀取courseid=? 的文章
 		}
 		else
 			console.log(err);
-		
+
 	});
 });
 
@@ -219,7 +241,7 @@ router.post('/uploadvideo',function(req,res){
 		file.name=num+"."+type;
 		file.path=path.join(__dirname, '../public/video/'+file.name);
 		num++;
-		
+
 		console.log(file);
 	});
 	res.end(num.toString());
@@ -302,12 +324,12 @@ router.post('/pretestupload',function(req,res){
 		console.log(file.name);
 		file.path=path.join(__dirname, '../public/images/'+file.name);
 	});
-	
+
 	form.parse(req,function(err,fields,files){
 		//console.log("fields:",fields.file);
 		filelist+="]";
 		res.json(filelist);
-	});		
+	});
 
 });
 router.get('/pretestdownload',function(req,res){
@@ -360,25 +382,43 @@ router.post('/uploadpost',upload.array(),function(req,res){//發表新文章
 		}
 		else
 			console.log(err);
-		
+
 	});
 });
-router.post("/more/",function(req,res){
+router.post("/more/",function(req,res){//按下最新/熱門button  and  按下更多BUTTON  動作
 	console.log("收到MORE 功能的要求");
 	//connection.query('SELECT  * from posting  WHERE courseId="'+req.session.courseid+'" AND Id<'+req.body.postid+' ORDER BY date DESC Limit 10', function(err, rows, fields){
+	var type=req.body.type;
+	var postid=req.body.postid;
+	if(type=="newest"){
+
 	var sql = "SELECT count(comment.postId) as coun,posting.* FROM posting left join comment\
 	on posting.Id = comment.postId where courseid='"+req.session.courseid+"'\
 	and posting.Id< '"+req.body.postid+"' \
 	group by posting.Id\
 	order by date desc limit 10;";
+
+	}else if(type="hotest"){
+
+		var sql="SELECT count(comment.postId) as coun,posting.* FROM posting left join comment\
+	on posting.Id = comment.postId where courseid='"+req.session.courseid+" '\
+	and posting.Id<"+postid+"\
+	group by posting.Id\
+	HAVING count(comment.postId) > 5\
+	order by date desc limit 10;";
+
+	}
+
 	connection.query(sql,function(err, rows, fields){
 		if(!err){
 			res.send(rows);
 			res.end();
 		}
-		else
+		else{
+			console.log(sql);
 			console.log(err);
-		
+		}
+
 	});
 });
 router.post("/find/tag",function(req,res){
@@ -389,7 +429,7 @@ router.post("/find/tag",function(req,res){
 		}
 		else
 			console.log(err);
-		
+
 	});
 
 });
@@ -414,7 +454,7 @@ router.post("/live/insert",function(req,res){
 });
 
 router.get("/live/init",function(req,res){
-	
+
 	connection.query('SELECT  * from live  WHERE course="'+req.session.courseid+'"  ORDER BY date DESC limit 6', function(err, rows, fields){
 		if(!err){
 			res.send(rows);
@@ -422,7 +462,7 @@ router.get("/live/init",function(req,res){
 		}
 		else
 			console.log(err);
-		
+
 	});
 
 });
@@ -434,7 +474,7 @@ router.get("/pretest/init",function(req,res){
 		}
 		else
 			console.log(err);
-		
+
 	});
 
 });
@@ -443,11 +483,11 @@ router.get("/pretest/init",function(req,res){
 
 
 	router.post("/valuetagsearch",function(req,res){
-		
-		
-		
+
+
+
 		var tag=req.body.tag;
-		
+
 		console.log("88888"+tag);
 		res.end();
 		/*
@@ -467,9 +507,9 @@ router.get("/pretest/init",function(req,res){
 					res.send(rows);
 				}
 			});
-			
+
 		*/
-		
+
 	});
 //>new
 router.post("/addviewcount",function(req,res){
@@ -568,7 +608,7 @@ router.post('/score/insert',function(req,res){
 						}
 					});
 				}
-				
+
 			}
 			else{console.log(err);}
 
@@ -600,7 +640,7 @@ router.post('/score/commconfirm',function (req,res){
 		nb="bad";
 		$nb="nice";
 	}
-	
+
 	var sql="SELECT * FROM score WHERE user='"+sqluser+"' AND type='"+sqltype+"' AND targetid='"+sqltargetid+"'";
 	connection.query(sql,function(err,result){//先去SQL 看USER 之前有沒有按過NICE/BAD
 		if(!err){
@@ -654,7 +694,7 @@ router.post('/score/commconfirm',function (req,res){
 			console.log("ERR");
 			console.log(err);
 		}
-		
+
 
 	});
 });
@@ -666,8 +706,70 @@ router.post("/getcommentbyid",function(req,res){
 		if(error){
 			console.log(sql);
 			throw error;
-		}	
+		}
 		res.send(rows);
+	});
+});
+router.post("/postchange",function(req,res){
+	var type=req.body.type;
+	var courseid=req.session.courseid;
+	if(type=="newest"){
+
+		var sql="SELECT count(comment.postId) as coun,posting.* FROM posting left join comment\
+	on posting.Id = comment.postId where courseid='"+req.session.courseid+"'\
+	group by posting.Id\
+	order by date desc limit 10;";
+
+	}else if(type=="hotest"){
+
+		var sql="SELECT count(comment.postId) as coun,posting.* FROM posting left join comment\
+	on posting.Id = comment.postId where courseid='"+req.session.courseid+" '\
+	group by posting.Id\
+	HAVING count(comment.postId) > 5\
+	order by date desc limit 10;";
+
+	}
+
+	connection.query(sql, function(err, rows, fields){
+		if(!err){
+			res.send(rows).end();
+		}
+		else{
+			console.log(sql);
+			console.log(err);
+		}
+
+	});
+
+});
+router.post("/record",function(req,res){
+	var type=req.body.type;
+	if(type=="p"){
+		var sql="select Id FROM posting WHERE Owner='"+req.session.passport.user+"' AND courseId='"+req.session.courseid+"'";
+
+	}else if(type=="c"){
+		var sql="SELECT posting.courseId,comment.Id,comment.owner FROM comment,posting WHERE comment.postId=posting.Id \
+		AND comment.owner='"+req.session.passport.user+"' AND posting.courseId='"+req.session.courseid+"'";
+	}
+	connection.query(sql,function(err,result){
+			if(err){
+				console.log(sql);
+				console.log(err);
+			}else
+			res.send(result).end();
+		});
+
+})
+router.post('/delete/post',function(req,res){
+	var id=req.body.id;
+	var sql='delete from posting where Id=" ' +id+ '"' ;
+	connection.query(sql,function(err,result){
+		if(err){
+			console.log(sql);
+			console.log(err);
+		}else{
+			res.end();
+		}
 	});
 });
 //<new
