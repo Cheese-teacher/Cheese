@@ -132,9 +132,8 @@ function getcoursename(){
 			drop+='<li><a onclick=changecourse(\'' + splitclass[i]+ '\',\'' + splitclassid[i]+ '\',\'' + splitdepartment[i]+ '\')>'+splitclass[i]+'</a></li>';
 	}
 	$('.dropdown-toggle').prepend(selected);
-	$('.dropdown-menu').append(drop);
-
-
+	//$('.dropdown-menu').append(drop);
+	$('.classselect').append(drop);
 
 }
 

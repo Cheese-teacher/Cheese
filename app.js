@@ -30,11 +30,12 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var routes = require('./routes/index.js');
 var pretest=require('./routes/pretest.js');
+var mainpage=require('./routes/mainpage.js');
 var selectcourse = require('./routes/selectcourse.js');
 var cheese_index = require('./routes/cheese_index.js');
+var gameweb=require('./routes/gameweb.js');
 var hotpage = require('./routes/hotpage.js');
 var mysql = require('mysql');
-var mainpage = require('./routes/mainpage.js');
 var notelist=require('./public/js/note.js');
 var onlineCount = 0;
 //server setup
@@ -147,10 +148,11 @@ app.use(session({
 //app.use('/socket', express.static(__dirname + '/node_modules/socket.io/lib'));
 app.use('/routes', routes[0]);
 app.use('/mainpage', mainpage);
+app.use('/gameweb', gameweb);
 app.use('/notelist', notelist);
 app.use('/pretest',pretest);
 app.use('/selectcourse', selectcourse);
-app.use('/mainpage',mainpage);
+
 
 // session resumption
 var tlsSessionStore = {};
