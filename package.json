@@ -79,7 +79,7 @@
     "url": "https://github.com/hackmdio/hackmd.git"
   },
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "postinstall": "./node_modules/bower/bin/bower install"
   }
 }
