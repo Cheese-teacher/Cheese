@@ -1,11 +1,11 @@
 {
     "development": {
-        "domain": "us-cdbr-iron-east-04.cleardb.net",
+        "domain": "localhost",
         "db": {
-            "username": "b9c4b74708d3b",
-            "password": "7c7e6b0a",
-            "database": "heroku_3f463398764a00c",
-            "host": "us-cdbr-iron-east-04.cleardb.net",
+            "username": "admin",
+            "password": "admin",
+            "database": "hackmd",
+            "host": "localhost",
             "port": "3306",
             "dialect": "mysql"
         },
@@ -15,7 +15,7 @@
         }
     },
     "production": {
-        "domain": "us-cdbr-iron-east-04.cleardb.net",
+        "domain": "blooming-spire-90767.herokuapp.com/",
         "db": {
             "username": "b9c4b74708d3b",
             "password": "7c7e6b0a",
