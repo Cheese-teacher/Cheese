@@ -1,11 +1,11 @@
 {
     "development": {
-        "domain": "localhost",
+        "domain": "us-cdbr-iron-east-04.cleardb.net",
         "db": {
-            "username": "admin",
-            "password": "admin",
-            "database": "hackmd",
-            "host": "localhost",
+            "username": "b9c4b74708d3b",
+            "password": "7c7e6b0a",
+            "database": "heroku_3f463398764a00c",
+            "host": "us-cdbr-iron-east-04.cleardb.net",
             "port": "3306",
             "dialect": "mysql"
         },
