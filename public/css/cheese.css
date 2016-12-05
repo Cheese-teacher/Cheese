@@ -16,8 +16,8 @@ section#features { padding: 0px;}
 .feature_inner { float: left; margin-bottom:40px;}
 .feature_inner > div { vertical-align:middle;}
 .feature_text {padding-top:40px;}
-.feature_content > .feature_inner .feature_text .feature_text_head { font-size:24px; margin:0px; margin-bottom:30px;}
-.feature_content > .feature_inner .feature_text p {color:#222325; font-size:14px; line-height:24px; letter-spacing:0.5px; margin-bottom:30px;}
+.feature_content > .feature_inner .feature_text .feature_text_head { font-size:26px; margin:0px; margin-bottom:30px;}
+.feature_content > .feature_inner .feature_text p {color:#222325; font-size:24px; line-height:24px; letter-spacing:0.5px; margin-bottom:30px;}
 .feature_content > .feature_inner .feature_text p:last-child { margin-bottom:0px;}
 .feature_content > .feature_inner:nth-child(odd) > .feature_img { float:left; margin-right:60px;}
 /*.feature_content > .feature_inner:nth-child(odd) > .feature_img img { border-radius:50%; border:6px solid #45ab55;}*/
@@ -28,6 +28,13 @@ section#features { padding: 0px;}
 /*.feature_content > .feature_inner:nth-child(even) > .feature_img img {border-radius:50%; border:6px solid #4787bf;}*/
 .feature_content > .feature_inner:nth-child(even) > .feature_text {text-align:left;}
 .feature_content > .feature_inner:nth-child(even) > .feature_text > h2 {color:#4787bf;}
+
+.laptop {
+	background-color: #242a2c;
+	padding-top: 20px;
+	padding-bottom: 70px;
+}
+
 
 .main1 > nav{
     margin-bottom: 0px;

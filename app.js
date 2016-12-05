@@ -216,16 +216,27 @@ app.engine('html', ejs.renderFile);
 app.use('/cheese_index', function(req, res, next) {
     if (req.isAuthenticated()) {
         //res.redirect('/');  //導到筆記首頁
-        res.redirect('/routes/course/');
-    } else {
         res.render('./views/cheese_index', {
-            url:config.url,
+            url: config.url,
             facebook: config.facebook,
             twitter: config.twitter,
             github: config.github,
             gitlab: config.gitlab,
             dropbox: config.dropbox,
-            google: config.google
+            google: config.google,
+            login_status: true
+        });
+        //res.redirect('/routes/course/');
+    } else {
+        res.render('./views/cheese_index', {
+            url: config.url,
+            facebook: config.facebook,
+            twitter: config.twitter,
+            github: config.github,
+            gitlab: config.gitlab,
+            dropbox: config.dropbox,
+            google: config.google,
+            login_status: false
         });
     }
 });

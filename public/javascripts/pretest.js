@@ -1,6 +1,22 @@
 var autotagarray=new Array();
+$('#Logout').on('click', function (){
+    $.ajax({
+    url: '/logout',
+    type: 'GET',
+    data: {
+    },
+    error: function(xhr) {
+      alert('Ajax request 發生錯誤');
+    },
+    success: function(response) {
+        alert('登出囉！');
+      window.location.href('/');
+    }
+  });
+});
 function init(courseid){
     console.log("init檔案部份...");
+    $('#prevtest').addClass("active");
     $.ajax({
         url:'/pretest/init',
         data:{courseid:courseid},
@@ -35,7 +51,7 @@ function init(courseid){
 
 function createfile(file){//DIV[pretest_display]的排版
 	//typeof(file)=object;
-	var typesetting=""; 
+	var typesetting="";
 	//var a="FILEABC.JPG";
 	//typeof(a)=string
 	for (var a = 0; a < file.length; a++) {
@@ -101,6 +117,7 @@ function pushtaginarray(alltag){
 
 
 $(function(){
+    $('#prevtest').addClass("active");
     var courseid=$("#data").data('courseid');
     init(courseid);
 
@@ -108,7 +125,7 @@ $(function(){
         $(this).autocomplete({
           source:autotagarray,
           appendTo:"#tag_input_auto",
-        
+
         });
     });
 
@@ -156,7 +173,7 @@ $(function(){
                 $("#pretest_upload_detail").css("display", "none");
                 tmp=createfile(data);
                 $('#pretest_display').prepend(tmp);
-            },  
+            },
             error: function (data) {
                 console.log("檔案上傳失敗");
             }

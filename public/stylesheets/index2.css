@@ -1,3 +1,6 @@
+body{
+	font-family: 'Open Sans', sans-serif;
+}
 *{
 	-webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -288,7 +291,7 @@ hr{
 .pretest_a{
 	display:block;
 	position:absolute;
-	white-space:normal; 
+	white-space:normal;
 	word-break:break-all;
 	height:120px;
 	width:90px;

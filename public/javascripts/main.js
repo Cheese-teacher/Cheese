@@ -15,13 +15,15 @@ $('#Logout').on('click', function (){
       alert('Ajax request 發生錯誤');
     },
     success: function(response) {
+        alert('登出囉！');
       window.location.href('/');
     }
   });
 });
 var init=function(courseid){//一進入討論區時的動作
     console.log('initing...');
-    //先發ajax 取得登入壯態
+    $('#forum').addClass("active");
+    //先發ajax 取得登入狀態
     $.ajax({
         url: '/me',
         type: 'GET',
