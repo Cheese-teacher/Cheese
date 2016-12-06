@@ -1,0 +1,11 @@
+上傳囉
+先 clone 下來
+再來打npm install
+再來bower install
+接著去資料庫創hackmd
+裡面的使用者帳號：admin 密碼：admin
+再來node app.js 就ok了
+有問題說一下 ～～～～～
+安裝過程
+
+npm install --save async   or     bower install async

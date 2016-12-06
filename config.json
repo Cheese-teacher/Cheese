@@ -9,24 +9,52 @@
             "port": "3306",
             "dialect": "mysql"
         },
+        "facebook": {
+            "clientID": "455717244623963",
+            "clientSecret": "11de325d7d06f0f3cbe5b59ca6ccdefa"
+        },
         "google": {
             "clientID": "691848651018-2e1snpc9mnt4m6o0i76g9do5j258jlk4.apps.googleusercontent.com",
             "clientSecret": "wT6fl-Pw2xxhBDIWQabSZoID"
         }
     },
     "production": {
-        "domain": "us-cdbr-iron-east-04.cleardb.net",
+        "domain": "localhost",
         "db": {
-            "username": "b9c4b74708d3bd",
-            "password": "7c7e6b0a",
-            "database": "heroku_3f463398764a00c",
-            "host": "us-cdbr-iron-east-04.cleardb.net",
-            "port": "3306",
-            "dialect": "mysql"
+            "username": "",
+            "password": "",
+            "database": "hackmd",
+            "host": "localhost",
+            "port": "5432",
+            "dialect": "postgres"
+        },
+        "facebook": {
+            "clientID": "change this",
+            "clientSecret": "change this"
+        },
+        "twitter": {
+            "consumerKey": "change this",
+            "consumerSecret": "change this"
+        },
+        "github": {
+            "clientID": "change this",
+            "clientSecret": "change this"
+        },
+        "gitlab": {
+            "baseURL": "change this",
+            "clientID": "change this",
+            "clientSecret": "change this"
+        },
+        "dropbox": {
+            "clientID": "change this",
+            "clientSecret": "change this"
         },
         "google": {
-            "clientID": "691848651018-2e1snpc9mnt4m6o0i76g9do5j258jlk4.apps.googleusercontent.com",
-            "clientSecret": "wT6fl-Pw2xxhBDIWQabSZoID"
+            "clientID": "change this",
+            "clientSecret": "change this"
+        },
+        "imgur": {
+            "clientID": "change this"
         }
     }
 }
