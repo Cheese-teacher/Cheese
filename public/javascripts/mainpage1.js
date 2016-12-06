@@ -24,8 +24,11 @@ $(function () {
 });	 
 window.onload=function(){
 	init();
-	 
-	
+	//samchange2
+	yourpostandcomment();
+	retursessionpostid();
+	retursessioncommentid();
+	shownotice();
 	
 }
 var departmentid=new Array;
@@ -86,6 +89,7 @@ function yourcourse (){//讀取USER.yourcourse
 				//result[0].Yourcourse="課號|課號|課號"
 			
 				courseinfo(result[0].Yourcourse);
+				cl("1",result[0].Yourcourse);
 				//result[0].hotselected="資管系,13|經濟系,11|"
 				departmentid=result[0].hotselected.split("|");
 				var did=new Array();
@@ -110,8 +114,9 @@ function courseinfo(yourcourse){//把USER 的HOTSELECT 加進去.selectclass裡
 		url: '/mainpage/yourcourseinfo',
 		data:   { yourcourse : yourcourse},
 		type : 'POST',
-		async: false,
+		async: true,
 		success: function (result) {
+			console.log("successss");
 			var coursearray=new Array();
 			coursearray=yourcourse.split("|");
 			//alert(coursearray);
@@ -143,10 +148,13 @@ function courseinfo(yourcourse){//把USER 的HOTSELECT 加進去.selectclass裡
 			document.cookie = "classdepartment="+cookdeid+"";
 			var x = document.cookie;
 			ahref+="<a href='./selectcourse'>---新增課程</a>";
-
 			$('.selectedclass').append(ahref);
 			$('#coursemenu').append(coursemenu);
 			
+		},
+		error:function(data){
+			console.log("errrrror");
+			console.log(data);
 		}
 	});
 }

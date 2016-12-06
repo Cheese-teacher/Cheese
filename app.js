@@ -32,10 +32,13 @@ var routes = require('./routes/index.js');
 var pretest=require('./routes/pretest.js');
 var mainpage=require('./routes/mainpage.js');
 var selectcourse = require('./routes/selectcourse.js');
+var searchresult = require('./routes/searchresult.js');
+
 var cheese_index = require('./routes/cheese_index.js');
 var gameweb=require('./routes/gameweb.js');
 var hotpage = require('./routes/hotpage.js');
 var mysql = require('mysql');
+var mainpage = require('./routes/mainpage.js');
 var notelist=require('./public/js/note.js');
 var onlineCount = 0;
 //server setup
@@ -153,7 +156,7 @@ app.use('/notelist', notelist);
 app.use('/pretest',pretest);
 app.use('/selectcourse', selectcourse);
 
-
+app.use('/searchresult',searchresult);
 // session resumption
 var tlsSessionStore = {};
 server.on('newSession', function (id, data, cb) {
@@ -215,7 +218,7 @@ app.engine('html', ejs.renderFile);
 
 app.use('/cheese_index', function(req, res, next) {
     if (req.isAuthenticated()) {
-        //res.redirect('/');  //å°åˆ°ç­†è¨˜é¦–é 
+        //res.redirect('/');  //¾É¨ìµ§°O­º­¶
         res.render('./views/cheese_index', {
             url: config.url,
             facebook: config.facebook,

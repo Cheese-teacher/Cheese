@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+  </title>
+
+<!--JQUERY js-->
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous"></script>
+  <!--JQUERY 右鍵選單 js-->
+  <link rel="stylesheet" type="text/css" href="/javascripts/jquery-contextmenu/jquery.contextMenu.css"></link>
+    <script src="/javascripts/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+  <script src="/javascripts/jquery-contextmenu/jquery.contextMenu.js"></script>
+  <script src="/javascripts/jquery-contextmenu/jquery.ui.position.js"></script>
+
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <!--BOOTSTRAP CSS -->
+  <link rel="stylesheet" href="/javascripts/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="/javascripts/fancybox/jquery.fancybox.js"></script>
+  <!--fancyBox js-->
+  
+
+  <script src="https://unpkg.com/masonry-layout@4.1/dist/masonry.pkgd.min.js"></script>
+  <!--masonry-->
+  <script src='/socket.io/socket.io.js'></script>
+<!--font awesome-->
+<link rel="stylesheet" href="/javascripts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <script src="/javascripts/bootbox.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/index2.css'/>
+	<!--auto serach tag-->
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+</head>
+
+<body style="">
+
+ 
+ 
+
+  <!--發文_INPUT -->
+    <!--<div id="new_post_div" style="width:650px;height:350px;position:absolute;top:50%;left:50%;margin:-250px 0px 0px -325px;z-index:1;background:white;" hidden="hidden">-->
+  <div class="modal fade" id="new_post_div" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+            <button type="button" class="close margin" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <!--***<input type="text" id="name" value="username">-->
+
+              <!--<input id="post-title" placeholder="如果你有需標題的需要，可以在這裡輸入">-->
+
+              
+              <input id="ano"  type="checkbox"  checked="checked" hidden><input id="name2" type="input"  size="4" placeholder="「暱稱」">
+              <select id="posttype">
+              <option>問題</option>
+              <option>研究</option>
+              <option>分享</option>
+              <option>意見</option>
+              </select>
+              <input type="text" id="post-title" placeholder="「標題」「必填」今天上課的內容超簡單的~">
+              <!--<textarea  id="text" STYLE="resize : none;" cols="40"wrap="physical"></textarea>-->
+              <textarea  id="text" rows="10" onkeyup="autogrow(this);" placeholder="「內文」"></textarea>
+              <label for="new_post_img"><img src="/images/img-ico.png" style="width:20px;height:20px;"> <span class="new_post_buttext"> 圖片</span></label>
+              <div id="new_post_preimg"></div>
+              <input type="file" id="new_post_img"  name="uploadfile" multiple="multiple"  style="display:none">
+              <label id="lab-links" for="links"><img src="/images/youtube-ico.png" style="width:20px;height:20px;"> <span class="new_post_buttext"> Youtube 影片</span></label>
+              <input id="new_post_youtube_text" type="text" id="links" size="25" placeholder="ex:https://www.youtube.com/watch?v=LmiIfOIeHRs">
+              <label id="new_post_code_tmp" for="new_post_code" ><img src="/images/code-ico.png" style="width:20px; height:20px;">
+              <span class="new_post_buttext"> Code</span></label>
+              
+              <textarea id="new_post_code" rows="5" onkeyup="autogrow(this);">        
+              </textarea>
+              <label id="new_post_tag_tmp" for="new_post_code" ><img src="/images/tag.png" style="width:20px; height:20px;">
+              <span class="new_post_buttext"> Tag</span></label>
+              <input type="text" id="new_post_tag" placeholder="ex: #考古題 #期中考必考">
+              <div>
+                <input type="text" id="live_input" placeholder="Youtube url" value="https://youtu.be/MuK6Bnidl6I"><input id="live_ipbutton" type="button" value="新增LIVE" onclick="live_insert()">
+              </div>
+              <input type="button" id="sendtext"  value="送出" data-dismiss="modal">
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+    </div>
+      <!--發文_INPUT-->
+  
+  <!--頂置欄-->
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+    <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#option">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+           <a class="navbar-brand" href="/mainpage">CHEESE 老師</a>
+    </div>
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                
+              </ul>
+            </li>
+          </ul>
+          <div class="collapse navbar-collapse" id="option">
+            <ul class="nav navbar-nav">
+              <li ><a href="/routes/course">討論區</a></li>
+              <li ><a href="/pretest/course/">考古題</a></li>
+              <li ><a href="#">筆記</a></li>
+              <li class="active"><a href="/routes/course">搜尋結果</a></li>
+            </ul>
+          </div>
+    </div>
+  </nav>
+  <!--頂置欄-->
+  <div class="container-fluid">
+    <div class="row">
+        <div class="slider_scroll" id="man_ss">
+			<div class="tab" id="man_tab">
+				<span>T</span>
+				<span>A</span>
+				<span>G</span>
+			</div>
+			<div id="tag" class="slider_content">
+				<div id="droppables" class="ui-widget-content" ondragover="allowDrop(event)" ondrop="drop(event,2)">
+				<textarea id="texta" rows="2" cols="50" >
+				</textarea>
+				</div>
+				<button type="button" onclick="tagsearch()">查詢tag</button>
+				<button type="button" onclick="wantedit()">修改完成</button>
+				<span class="glyphicon glyphicon-trash" style="font-size:50px" ondragover="allowDrop(event)" ondrop="drop(event,1)"></span>
+				
+			</div>
+			
+		</div>
+      <!--</div>-->
+      <div class="col-md-2">
+      <div class="fullcol " style="height:360px;overflow:scroll;overflow-x:hidden;">
+      </div>
+      </div>
+      <div class="col-md-10 col-xs-12 ">
+      <div class="fullcol">
+        <div id="live_area" style="">
+        <div id="live_text" style="">&nbsp&nbspLIVE</div>
+        <div id="live_div">
+        </div>
+        </div>
+        <!--考古題DIV-->
+        <div id="pretest_area" >
+        <div id="pretest_text">&nbsp&nbsp考古題&筆記</div>
+        <div id="pt_btndiv">
+          <div >
+            <label id="pt_b1">考古題</label>
+            <label id="pt_b2">筆記</label>
+          </div>
+          <div id="pretest_div" style="display:inline-block;height:190px;width:100%;margin-left:0%;white-space: nowrap;overflow:auto;padding:10px 15px 0px 15px;">
+          </div>
+          </div>
+        </div>
+        <!--考古題DIV-->
+        <!--
+        <div id="coursetime" style="border:2px solid blue;width:540px;" hidden>
+          <div>
+            <span id="starttime" style="color:white;"></span><span>%NBSP%NBSP%NBSP%NBSP%NBSP%NBSP%NBSP%NBSP%NBSP%NBSP</span>
+            <span id="endtime" style="color:white; text-align:right;"></span>
+          </div>
+          <input id="timebutton" type="button" value="+" style="position:relative;" onclick="pushplus()">
+          <div id="tagshow">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
+            <H1>只才有XS 才看得到這句</H1>
+          </div>
+        </div>
+
+        </div>
+        -->
+<!--
+        <div class="fullcol2">
+        <div class="" style="width:100%">
+          <div  style="width:24%;float:left;" >
+最新熱門發文直播BUTTON
+          <input type="button" id="newest-btn" class="posting-fourbutton" value="最新" onclick="pt_change('newest')" disabled="true" >
+          </div>
+          <div style="float:left;width:24%">
+          <input type="button" id="hotest-btn" class="posting-fourbutton" value="熱門"  onclick="pt_change('hotest')"></div>
+          <div style="float:left;width:24%">
+          <input type="button" class="posting-fourbutton" value="發文" id="new_post" data-toggle="modal" data-target="#new_post_div">
+          </div>
+          <div style="float:left;width:24%">
+          <input type="button" class="posting-fourbutton"  id="live_btn" value="直播">
+          </div>
+      
+        </div>
+-->
+<!--所有文章顯示DIV-->
+        <div id="divshow" class="" style="width:100%">
+           <div class="grid" id='div' data-masonry='{ "itemSelector": ".grid-item","columnWidth":10}'>
+          </div>
+        </div>
+        <div><input type="button" id="post_more" value="更多文章" style="width:100%;margin-bottom:30px" data-type="newest"></div>
+      </div>
+      </div><!--end of col-10-->
+      
+    </div><!--end of row-->
+  </div><!--end of container-->
+<!--posting-two-button 所顯示的小視窗-->
+    <div class="modal fade" id="posting-two-button-showdiv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header posting-showbox-one">
+            </div>
+            <div class="modal-body posting-showbox-two">
+              <h1>body</h1>
+            <div class="modal-footer">
+                <h1>footer</h1>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--posting-two-button 所顯示的小視窗-->
+<script>
+        $(document).on("click", "#abc", function(e) {
+            bootbox.dialog({
+              message: "message",
+              title: "Custom title",
+              backdrop: false,
+
+              buttons: {
+                success: {
+                  label: "abc",
+                  className: "btn-success",
+                  callback: function() {
+                    $(".abc").show("great success");
+                  }
+                },
+                danger: {
+                  label: "Danger!",
+                  className: "btn-danger",
+                  callback: function() {
+                    Example.show("uh oh, look out!");
+                  }
+                },
+                main: {
+                  label: "Click ME!",
+                  className: "btn-primary",
+                  callback: function() {
+                    Example.show("Primary button");
+                  }
+                }
+              }
+            });
+        });
+    </script>
+    <script src="/javascripts/main.js"></script>
+	 <script src="/javascripts/jquery.nestable.js"></script>
+	<script src="/javascripts/tag.js"></script>
+	<script src="/javascripts/notice.js"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=js&amp;"></script>
+      <!--
+     <link rel="stylesheet" href="/javascripts/pretty/prettify.css"/>
+     <script src="/javascripts/pretty/prettify.js"></script>-->
+<link rel="stylesheet" id="gridcss"  href="/stylesheets/grid1.css">
+
+
+</body>
+
+</html>

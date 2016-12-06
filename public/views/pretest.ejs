@@ -2,27 +2,8 @@
 <html lang="cn">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
-<body>
-
-    <%- include navbar %>
-    <div id="data" data-courseid=<%= courseid %>></div>
-    <label for="pretest_upload_button" style="border:5px solid grey;">考古題上傳</label>
-	<input type="file" value="考古題上傳" id="pretest_upload_button" multiple="multiple" style="display:none;">
-	<div id="filetype"></div>
-	<div id="pretest_upload_detail" style="border:5px solid red ;width:100%">
-
-	</div>
-	<div id="pretest_display" style="border:5px solid green; width:100%" ;>
-	  <P> 程式設計考古題庫 :</P>
-	</div>
-
-
-
-
-
-<!--JQUERY js-->
+    <link rel="stylesheet" href="/javascripts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--JQUERY js-->
   <link href="/stylesheets/jquery-ui.min.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
      <!--BOOTSTRAP CSS -->
@@ -39,6 +20,94 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <!-- JQUERY AUTO-->
   <script src="/javascripts/pretest.js"></script>
-  <link href="/stylesheets/pretest.css">
+<script src="/javascripts/tag.js"></script>
+<script src='../../socket.io/socket.io.js'></script>
+ <script src="/javascripts/notice.js"></script>
+
+<link rel="stylesheet" href="/javascripts/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="/javascripts/fancybox/jquery.fancybox.js"></script>
+
+    <link rel='stylesheet' href='/stylesheets/index2.css'/>
+      <link rel="stylesheet" href="/stylesheets/pretest.css" >
+  <script src="/javascripts/jquery.nestable.js"></script>
+  
+
+
+</head>
+<body>
+
+    <%- include navbar %>
+    <div id="data" data-courseid=<%= courseid %>></div>
+    <!--
+    <label for="pretest_upload_button" style="border:5px solid grey;">考古題上傳</label>
+	<input type="file" value="考古題上傳" id="pretest_upload_button" multiple="multiple" style="display:none;">
+	<div id="filetype"></div>
+	<div id="pretest_upload_detail" style="border:5px solid red ;width:100%">
+		
+	</div>
+	<div id="pretest_display" style="border:5px solid green; width:100%" ;>
+	  <P> 程式設計考古題庫 :</P>
+	</div>
+-->
+<div id="data" data-courseid=<%= courseid %> hidden></div>
+<div class="container-fluid">
+  <div class="row upload" >
+	<div class="col-md-12" id="area_upload" >
+
+	  <div id="upload_core">
+        <div style="text-align:center;margin-bottom:30px;"><p style="font-size: 40px;color:white; text-shadow:0 1px 8px rgba(0, 0, 0, .5);   border-bottom:1px solid white;margin-bottom:10px;">考古題</p><p style="color:white;font-size: 18px;  font-family:Microsoft JhengHei;padding:15px 30px;background-color:rgba(0,0,0,0.5);border-radius: 15px">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp自古以來，每逢考試前夕，手中有考古題者無所畏懼。相反，手中無考古題者皆會驚慌失措。所以，電腦裡有歷年考過或常考題目的人，趕快把它上傳上來，拯救一群無助的學弟學妹吧。</p></div>
+      <div id="upload_button">
+          <label for="pretest_upload_button" ><i class="fa fa-file-text" aria-hidden="true" style="font-size:28px;color:white;"></i>&nbsp<span>Click To Upload</span></label>
+          <input type="file" value="考古題上傳" id="pretest_upload_button" multiple="multiple" style="display:none;">
+      </div>
+	    <div id="upload_drop_preview">
+	    <div id="pretest_upload_detail" ></div>
+	  </div>
+	  <div id='upload_comfirm'>
+      
+    </div>
+	 </div>
+	</div><!--end of col-md-12-->
+  </div><!--end of row-->
+
+
+  <div class="row">
+      <div id="filetype" style="text-align: center;margin-top:0px"></div>
+
+  </div><!--end of row-->
+
+
+  <div class="row" style="margin:20px 0px">
+    <div class="col-md-2">
+      <div class="fullcol " id="notice" style="height:360px;overflow:scroll;overflow-x:hidden;">
+      
+      </div>
+      </div>
+    <div class="col-md-10" style="padding-top:30px;background-color:white;">
+      	<div id="pretest_display" "></div>
+    </div><!--end of col-md-12-->
+  </div><!--end of row-->
+</div><!--end of container-->
+
+
+ <!--posting-two-button 所顯示的小視窗-->
+    <div class="modal fade" id="posting-two-button-showdiv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header posting-showbox-one">
+            </div>
+            <div class="modal-body posting-showbox-two">
+              <h1>body</h1>
+            <div class="modal-footer">
+                <h1>footer</h1>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--posting-two-button 所顯示的小視窗-->
+
+
 </body>
 </html>

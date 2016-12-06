@@ -27,7 +27,6 @@ var num=0;
 //new
 
 router.get('/', function(req, res, next) {
-	
     res.render('./views/mainpage', { title: '主頁' ,url:config.url});
 });
 
@@ -197,16 +196,24 @@ router.post('/yourcourseinfo', upload.array(),function(req, res , next){
 		course+=' OR Class = "'+coursearray[i]+'"';
 	}
 	
-	
-	
-	connection.query(' SELECT * from class where '+course+' '  ,function(error, rows, fields){
+	var sql=' SELECT * from class where '+course+' '  ;
+	connection.query(sql,function(error, rows, fields){
+
 		//檢查是否有錯誤
 		if(error){
 			throw error;
 		}	
 		
 		req.session.courseinfo=rows;
-		res.send(rows);
+		try{
+			console.log("OK1");
+			res.send(rows).end();
+			console.log("OK2");
+		}
+		catch(err){
+			console.log("00000000000000000000try error");
+			console.log(err);
+		}
 		
 		
 	});
