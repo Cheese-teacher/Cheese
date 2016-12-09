@@ -535,6 +535,8 @@ app.post('/uploadimage', function (req, res) {
 app.get("/hotpage", hotpage);
 //get new note
 app.get("/new", response.newNote);
+//Create a new Class note
+app.get("/newNoteWithClass" , response.newNoteWithClass);
 //get publish note
 app.get("/s/:shortid", response.showPublishNote);
 //publish note actions

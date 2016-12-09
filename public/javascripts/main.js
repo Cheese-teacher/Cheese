@@ -69,7 +69,7 @@ var init=function(courseid){//一進入討論區時的動作
             alert(err);
         },
         success: function (response) {
-            $("#Notelink").attr("href",response);
+            $("#Notelink").attr("href", response);
             //window.location.href = response.url;
         }
     });

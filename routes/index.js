@@ -12,7 +12,6 @@ var multer = require('multer'); // v1.0.5
 var upload = multer(); // for parsing multipart/form-data
 var async= require('async'); //samchange1
 var config = require("../lib/config.js");
-var cors = require('cors');
 router.use(bodyParser.json()); // for parsing application/json
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -132,12 +131,13 @@ router.post('/getNote',function(req, res){
 	var classid = req.body.classid;
     var sql = 'select shortid from Notes where class = "' + classid + '" ';
     connection.query(sql ,function(err,result){
-		if(err){
+		if(err) {
 			console.log(err);
             console.log(sql);
-		}else{
+		} else {
             if(result.length == 0) {
-                var url = 'http://localhost:3000/';
+                //若該堂課未曾創建筆記，及創建該課筆記
+                var url = 'http://localhost:3000/newNoteWithClass';
             }else {
                 var url = 'http://localhost:3000/'+ result[0].shortid;
             }
