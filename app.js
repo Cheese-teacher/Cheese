@@ -40,9 +40,7 @@ var hotpage = require('./routes/hotpage.js');
 var mysql = require('mysql');
 var mainpage = require('./routes/mainpage.js');
 var notelist=require('./public/js/note.js');
-var onlineCount = 0;
-//server setup
-
+var cors = require('cors');
 
 if (config.usessl) {
     var ca = (function () {
@@ -125,6 +123,7 @@ app.use(helmet.hsts({
     includeSubdomains: true,
     preload: true
 }));
+app.use(cors());
 
 
 
@@ -218,7 +217,7 @@ app.engine('html', ejs.renderFile);
 
 app.use('/cheese_index', function(req, res, next) {
     if (req.isAuthenticated()) {
-        //res.redirect('/');  //¾É¨ìµ§°O­º­¶
+        //res.redirect('/');  //ï¿½É¨ìµ§ï¿½Oï¿½ï¿½ï¿½ï¿½
         res.render('./views/cheese_index', {
             url: config.url,
             facebook: config.facebook,

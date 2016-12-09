@@ -10,7 +10,7 @@ var targetdeletetag=new Array();
 //把當週的TAG 加進去發文OPTION 裡面------------------
 //取得該課程的所有TAG----------------
 function gettag(){
-	
+
     var a;
     $.ajax({
         url:'/pretest/get/tag',
@@ -48,12 +48,12 @@ function checktag(tag){
 			autotagarray.push(tagarray[i]);
 		}
 	}
-	
+
 	//alert(tagnum);
 	return tagnum;
 }
 function pushtaginarray(alltag){
-	
+
 	//autotagarray.splice(0, autotagarray.length);
     for(var a=0;a<alltag.length;a++){
         autotagarray.push(alltag[a].tag);
@@ -66,7 +66,7 @@ function pushtaginarray(alltag){
 function dragStart(event) {
 	var id=event.target.id;
 	 var mytag= jQuery("#"+id).data('tag');
-	
+
     event.dataTransfer.setData("Text", mytag);
     $("#texta").css({
     	"-webkit-box-shadow": "inset 0px 1px 26px 0px rrgba(255,194,10,1)",
@@ -86,15 +86,15 @@ function dragend(){
 function tagsearch(){
 	var searcharray=new Array;
 	searcharray=document.getElementById("texta").value.split(",");
-	
+
 	resettag=undefined;
 	resettag=new Object();
 	var tagarray=$('.dd').nestable('serialize');
 	count=0;
 	settagparent(tagarray,null);
-	
+
 	console.log(resettag);
-	
+
 	$.ajax({
 		url:'/routes/valuetagsearch',
 		data:   { searcharray:searcharray , textarray:resettag },
@@ -106,27 +106,27 @@ function tagsearch(){
 			error:function(data){console.log("main.js gettag function 出錯誤");}
 	});
 }
-	
-	
 
- 
+
+
+
 
 function allowDrop(event) {
     event.preventDefault();
 }
 
 function drop(event,w) {
-	
+
     event.preventDefault();
 	var data = event.dataTransfer.getData("Text");
 	if(w==1){
 		deletetag(data);
 	}
 	if(w==2){
-		
+
 		document.getElementById("texta").value +=data+",";
 	}
-  
+
 }
 
 
@@ -144,11 +144,11 @@ function updatetag(){
         success:function(data){
            alert('success');
         },
-        error:function(data){ 
+        error:function(data){
             console.log("[main.js]function addpotion 失敗");
         }
     });
-	
+
 }
 
 function wantedit(){
@@ -158,8 +158,8 @@ function wantedit(){
 	var tagarray=$('.dd').nestable('serialize');
 	count=0;
 	settagparent(tagarray,null);
-	
-	
+
+
 	updatetag();
 	//samchange2
 	/*
@@ -174,42 +174,42 @@ function wantedit(){
 }
 
 function createtag(tag){
-	
+
 	// typesetting+="<a class='tag_a' onclick='tagsearch(\"" + tag[a].id+ "\",\"" + tag[a].tag+ "\")'>"+tag[a].tag+"</a ><span style='color:white'> | </span>";
     var parentT=new Array();
 	var checkT=new Array();
 	var parentcount=0;
 	var typesetting="";
 	var endcount=0;
-	
+
 	typesetting+='<div class="dd" id="nestable">';
 	typesetting+='<ol class="dd-list">';
     for (a in tag){
-		
+
            if(tag[a].parentTag==null){
 				typesetting+='<li class="dd-item dd3-item" data-id="'+tag[a].id+'" data-tag="'+tag[a].tag+'" id="'+tag[a].id+'"  draggable="true" ondragstart="dragStart(event)" ondragend="dragend();">';
-				
+
 				typesetting+='  <div class="dd-handle dd3-handle" >Drag</div><div class="dd3-content">'+tag[a].tag+'</div>';
-				
+
 				typesetting+='</li>';
 				parentT[parentcount]=tag[a].id;
 				parentcount++;
 				endcount++;
 		   }
-		   
-			
+
+
 	}
 	typesetting+='</ol> </div>';
-	
-	
+
+
 	 $('#tag').append(typesetting);
-	
-	 
+
+
 	// $('#nestable').nestable();
 	 var ttt="";
 	 var hasadd=0;
 	while(endcount<tag.length){
-		
+
 		for(var i in parentT){
 			checkT[i]=parentT[i];
 		}
@@ -220,7 +220,7 @@ function createtag(tag){
 			ttt="";
 			ttt+='<ol class="dd-list">';
 			for (a in tag){
-				
+
 				if(tag[a].parentTag==checkT[i]){
 					ttt+='<li class="dd-item dd3-item"  data-id="'+tag[a].id+'" data-tag="'+tag[a].tag+'" id="'+tag[a].id+'" draggable="true" ondragstart="dragStart(event)">';
 					ttt+='<div class="dd-handle dd3-handle" >Drag</div> <div class="dd3-content" >'+tag[a].tag+ '</div>';
@@ -232,20 +232,20 @@ function createtag(tag){
 				}
 			}
 			ttt+='</ol>';
-			
+
 			if(hasadd==1){
 				$('#'+checkT[i]).append(ttt);
 			}
 		}
 		//ttt='<span class="glyphicon glyphicon-trash" style="font-size:50px" ondragover="allowDrop(event)" ondrop="drop(event,1)"></span>';
-		
+
 		checkT.splice(0, checkT.length);
-		
-	}	
-	
+
+	}
+
 	 $('#nestable').nestable();
-	 
-	 
+
+
 };
 
 
@@ -266,7 +266,7 @@ function gettagchild(tagarray,tag){
 
 
 function settagparent(tagarray,parentid){
-	
+
 	for(var i in tagarray){
 		tagarray[i].parentid=parentid;
 		//alert(count);
@@ -284,7 +284,7 @@ function deletetag(tag){
 	count=0;
 	var candelete=gettagchild(tagarray,tag);
 
-	
+
 	if(candelete==false){
 		alert('this tag has children cant delete');
 	}
@@ -301,21 +301,21 @@ function deletetag(tag){
 					createtag(gettag());
 					$('.dd').nestable('collapseAll');
 				}
-				
+
 			},
 				error:function(data){console.log("main.js gettag function 出錯誤");}
 		});
 	}
 }
 //samchange1
-	
+
 	function split( val ) {
-		
+
       return val.split( /,\s*/ );
     }
-	
+
     function extractLast( term ) {
-		
+
       return split( term ).pop();
     }
 	// 当选择一个条目时不离开文本域
@@ -346,10 +346,10 @@ function deletetag(tag){
 			  return false;
 			}
 		  });
-      })   
-	  
+      })
+
 	  $(document.body).on('keydown','#new_post_tag',function(event){
-		  
+
 		$(this).autocomplete({
 			minLength: 0,
 			appendTo:"#tagauto", //NEW
@@ -375,14 +375,14 @@ function deletetag(tag){
 			  return false;
 			}
 		  });
-      }) 
+      })
 	  //samchange1
-	  
+
 function getcoursename(){
-	
+
 	var x = document.cookie;
 	var splitcookie=x.split(";");
-	
+
 	for(var i in splitcookie){
 		var isclassname=splitcookie[i].substring(1,10);
 		var departmentid= splitcookie[i].substring(1,16);
@@ -399,10 +399,10 @@ function getcoursename(){
 		if(departmentid=="classdepartment")
 		{
 			var department=splitcookie[i].substring(17);
-			
+
 		}
 	}
-	
+
 	var splitclass=classname.split("|");
 	var splitclassid=classid.split("|");
 	var splitdepartment=department.split("|");
@@ -413,7 +413,7 @@ function getcoursename(){
 	}
 	$('.dropdown-toggle').prepend(selected);
 	$('.dropdown-menu').append(drop);
-	
-	
-	
+	$('#note').attr('href', splitclassid[0]);
+
+
 }

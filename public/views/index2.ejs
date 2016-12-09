@@ -6,7 +6,7 @@
   <title>
   </title>
 
-   
+
 <!--JQUERY js-->
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
     crossorigin="anonymous"></script>
@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="/javascripts/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
   <script type="text/javascript" src="/javascripts/fancybox/jquery.fancybox.js"></script>
   <!--fancyBox js-->
-  
+
 
   <script src="https://unpkg.com/masonry-layout@4.1/dist/masonry.pkgd.min.js"></script>
   <!--masonry-->
@@ -41,7 +41,7 @@
 <body style="">
 
   <div id="hidden_data" data-courseid=<%= courseid %> ></div>
- 
+
   <!--考古題備用-->
   <label for="pre-test-upload" style="border:5px solid grey;" hidden="hidden">考古題上傳</label>
   <input type="file" value="考古題上傳" id="pre-test-upload" multiple="multiple" style="display:none;">
@@ -81,8 +81,8 @@
               <input id="new_post_youtube_text" type="text" id="links" size="25" placeholder="ex:https://www.youtube.com/watch?v=LmiIfOIeHRs">
               <label id="new_post_code_tmp" for="new_post_code" ><img src="/images/code-ico.png" style="width:20px; height:20px;">
               <span class="new_post_buttext"> Code</span></label>
-              
-              <textarea id="new_post_code" rows="5" onkeyup="autogrow(this);">        
+
+              <textarea id="new_post_code" rows="5" onkeyup="autogrow(this);">
               </textarea>
               <label id="new_post_tag_tmp" for="new_post_code" ><img src="/images/tag.png" style="width:20px; height:20px;">
               <span class="new_post_buttext"> Tag</span></label>
@@ -95,7 +95,7 @@
 
     </div>
       <!--發文_INPUT-->
-  
+
   <!--頂置欄-->
   <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
@@ -113,15 +113,16 @@
               <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                
+
               </ul>
             </li>
           </ul>
           <div class="collapse navbar-collapse" id="option">
             <ul class="nav navbar-nav">
               <li class="active"><a href="/routes/course">討論區</a></li>
-              <li ><a href="/pretest/course/">考古題</a></li>
-              <li ><a href="#">筆記</a></li>
+              <li><a href="/pretest/course/">考古題</a></li>
+              <li><a id="Notelink" href="#">筆記</a></li>
+              <div id="tempNote" data-class="<%- courseid%>"></div>
             </ul>
           </div>
     </div>
@@ -129,8 +130,6 @@
   <!--頂置欄-->
   <div class="container-fluid">
     <div class="row">
-     
-	  
         <div class="slider_scroll" id="man_ss">
 			<div class="tab" id="man_tab">
 				<span>T</span>
@@ -145,19 +144,19 @@
 				<button type="button" onclick="tagsearch()">查詢tag</button>
 				<button type="button" onclick="wantedit()">修改完成</button>
 				<span class="glyphicon glyphicon-trash" style="font-size:50px" ondragover="allowDrop(event)" ondrop="drop(event,1)"></span>
-				
+
 			</div>
-			
+
 		</div>
 
       <!--</div>-->
-	  
+
       <div class="col-md-2">
       <div class="fullcol " id="notice" style="height:360px;overflow:scroll;overflow-x:hidden;">
-     
+
       </div>
       </div>
-	  
+
       <div class="col-md-10 col-xs-12 ">
       <div class="fullcol">
         <div id="live_area" style="">
@@ -187,7 +186,7 @@
           <div id="tagshow">
           </div>
         </div>
-        
+
 
         </div>
 
@@ -206,7 +205,7 @@
           <input type="button" class="posting-fourbutton"  id="live_btn" value="直播">
           <input id="live_ipbutton" type="button" value="新增LIVE" onclick="live_insert()" style="display:none;">
           </div>
-      
+
         </div>
 <!--所有文章顯示DIV-->
         <div id="divshow" class="" style="width:100%">
@@ -216,7 +215,7 @@
         <div><input type="button" id="post_more" value="更多文章" style="width:100%;margin-bottom:30px" data-type="newest"></div>
       </div>
       </div><!--end of col-10-->
-      
+
     </div><!--end of row-->
   </div><!--end of container-->
 <!--posting-two-button 所顯示的小視窗-->
@@ -269,7 +268,7 @@
             });
         });
     </script>
-	
+
     <script src="/javascripts/main.js"></script>
 	 <!--samchange2-->
 	 <script src="/javascripts/jquery.nestable.js"></script>
@@ -282,9 +281,9 @@
 <link rel="stylesheet" id="gridcss"  href="/stylesheets/grid1.css">
 
     <!--彈木---->
-<script src="/javascripts/demu/tinycolor-0.9.15.min.js" ></script>
-<script src="/javascripts/demu/jquery.barrager.js " ></script>
-
+<script src="/javascripts/demu/tinycolor-0.9.15.min.js"></script>
+<script src="/javascripts/demu/jquery.barrager.js"></script>
+<script src="/javascripts/notelink.js"></script>
 <!--cript src="/javascripts/singledemu.js"></script>-->
 
 </body>

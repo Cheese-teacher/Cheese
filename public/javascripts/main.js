@@ -1,6 +1,6 @@
 //初始化FUNCTION : init > createposting > lesstext
 //新增POSTING FUNCTION: getpostId > uploadpost > $.uploadfile > youtubelink > codeshow
-//查看POSTING FUNCTION: getpost> getcomment > createfullpost 
+//查看POSTING FUNCTION: getpost> getcomment > createfullpost
 //新增Comment FUNCTION: autogrow > insertcomment > createcomment
 //posting上面的下拉選單:contextmenu>
 //初始化-->-------------------------------
@@ -60,6 +60,19 @@ var init=function(courseid){//一進入討論區時的動作
             }
         }
     });
+    //插入筆記的連結
+    $.ajax({
+        url: '/routes/getNote',
+        data: { classid : $('#tempNote').data('class')},
+        type : 'POST',
+        error: function(err){
+            alert(err);
+        },
+        success: function (response) {
+            $("#Notelink").attr("href",response);
+            //window.location.href = response.url;
+        }
+    });
     initposting();
     live_init();
     pretest_init();
@@ -96,34 +109,32 @@ function userrecord(type){
           var tmp=data[a].Id.toString();
           user_commrecord[tmp]=tmp;
         }
-      } 
+      }
     },
     error:function(data){console.log("record error")}
   });
 };
 function changecourse(coursename,courseid,departmentid){
 	alert(departmentid);
-	
 	document.cookie="selected="+coursename+";path=/";
-	
+    //noteLink(courseid);
 	$.ajax({
 		url: '/routes/setsession',
-		data:   { classid : courseid,departmentid:departmentid},
+		data:   { classid : courseid, departmentid:departmentid},
 		type : 'POST',
 		async: false,
 		success: function () {
 			 window.location.reload();
 		}
-	
 	});
 }
 
 
 function getcoursename(){
-	
+
 	var x = document.cookie;
 	var splitcookie=x.split(";");
-	
+
 	for(var i in splitcookie){
 		var isclassname=splitcookie[i].substring(1,10);
 		var departmentid= splitcookie[i].substring(1,16);
@@ -140,10 +151,10 @@ function getcoursename(){
 		if(departmentid=="classdepartment")
 		{
 			var department=splitcookie[i].substring(17);
-			
+
 		}
 	}
-	
+
 	var splitclass=classname.split("|");
 	var splitclassid=classid.split("|");
 	var splitdepartment=department.split("|");
@@ -155,8 +166,8 @@ function getcoursename(){
 	$('.dropdown-toggle').prepend(selected);
 	//$('.dropdown-menu').append(drop);
 	$('.classselect').append(drop);
-
 }
+
 
 var $grid=$('.grid').masonry({
       itemSelector: '.grid-item'
@@ -238,11 +249,11 @@ function insertcomment(courseid,postid){        //新增留言
               a.push(d);
               createcomment(a,"special");
 			  socket.emit('insertcomment',a,postid,courseid);
-			  
-            }    
+
+            }
         });
     }
-    
+
 
     return '';
 }
@@ -272,9 +283,9 @@ function imglist(imglist){
         else{
             typesetting+="<a class='single' href='/images/" + img[b] + "'><img style='width:100px;height:90px;border:2px solid grey;margin:2px;' src='/images/" + img[b] + "' / ></a>";
         }
-        
+
     }
-    typesetting+="</div>";//end img  
+    typesetting+="</div>";//end img
     return typesetting;
 };
 function picshow(dom,type){
@@ -312,7 +323,7 @@ function picshow(dom,type){
       html+='<a class="left carousel-control" href="#carousel-example-generic'+postid+'c" role="button" data-slide="prev" >';
       else
     html+='<a class="left carousel-control" href="#carousel-example-generic'+postid+'" role="button" data-slide="prev" >';
-  
+
     html+='<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>';
     html+='<span class="sr-only">Previous</span>';
     html+='</a>';
@@ -333,15 +344,15 @@ setTimeout(function(){
 
     gridlayout();
 },100);
-   
-    
+
+
 };
 //img 排版----------------------------------------
 //code 排版-->------------------------------
 function codeshow(dom){//CODE 的排版
     dom.parents('.posting-two').siblings('.posting-three').find('.posting-three-code').show();
     $grid.masonry('layout');
-    
+
 };
 //code 排版<------------------------------------
 //youtueb link 排版-->-------------------
@@ -360,7 +371,7 @@ function initposting(){
         success :function(data){
                 editpostdata=data;
                 createposting(data,"append");
-				
+
         },
         error:function(data){
             console.log("fail",data);
@@ -375,8 +386,8 @@ function initposting(){
 function modify(id){
 	//id,type,title,tag,imglist,content,like,youtubeLink,code
 	//alert(editpostdata[num].title);
-	
-	
+
+
 	for(i in editpostdata){
 		if(editpostdata[i]!=undefined){
 			if(editpostdata[i].Id==id){
@@ -384,7 +395,7 @@ function modify(id){
 			}
 		}
 	}
-	
+
 	editpost=num;
 	document.getElementById("post-title").value =editpostdata[num].title;
 	//document.getElementById("posttype").value ="問題";​​​​​​​​​​
@@ -399,7 +410,7 @@ function modify(id){
 	$("#new_post_div").css('opacity', 0).slideDown('slow').animate({ opacity: 1 },{ queue: false, duration: 'slow' });
     window.scrollTo(0,0);
 	*/
-	
+
 }
 
 /*
@@ -415,7 +426,7 @@ function createposting (data,direct){
         var percent2=(data[a].bad/(data[a].bad+data[a].nice)).toFixed(2)*100;
 
         if(isNaN(percent1)&&isNaN(percent2)){
-            
+
         }else{
             x=percent1;
             y=percent2;
@@ -430,7 +441,7 @@ function createposting (data,direct){
             var typesetting='<div class="grid-item  grid-width " id="p'+data[a].Id+'" data-postid="'+data[a].Id+'">';
              typesetting+='<div class="posting-one " style="width:100%" data-postid="'+data[a].Id+'">';
                typesetting+='<div class="posting-one-imgcontent ">';
-                 
+
                 if(data[a].ownerico!="")
                   typesetting+='<div class="posting-one-img" style="background-image:url(\'/images/owner-ico'+data[a].ownerico+'.png\')">';
                 else
@@ -460,7 +471,7 @@ function createposting (data,direct){
              if(isNaN(percent1)&&isNaN(percent2)){
               typesetting+='<div class="posting-green" style="display:inline-block;background-color:#E1E1E1;height:5px;width:50%;"></div>';
               typesetting+='<div class="posting-red" style="display:inline-block;background-color:#E1E1E1;height:5px;width:50%;"></div>';
-             }              
+             }
              else{
               typesetting+='<div class="posting-green" style="display:inline-block;background-color:#3BFE5C;height:5px;width:'+x+'%;"></div>';
               typesetting+='<div class="posting-red" style="display:inline-block;background-color:#FE3B3B;height:5px;width:'+y+'%;"></div>';
@@ -485,7 +496,7 @@ function createposting (data,direct){
               else
                 typesetting+='<span class="posting-two-showbutton"  data-toggle="modal" data-target="#posting-two-button-showdiv">完整內容</span><span id="s'+data[a].Id+'" style="color:#A4A4A4;"> '+data[a]['coun']+'則回覆</span>';
             }
-                 
+
         if(data[a].imglist!==""){
           if(direct=="showbox")
             typesetting+="<img src='/images/img-ico.png' style='height:35px;width:35px;float:right' onclick='picshow($(this),1)' data-imglist='"+data[a].imglist+"' data-postid='"+data[a].Id+"'></img>";
@@ -523,7 +534,7 @@ function createposting (data,direct){
                 else
                  typesetting+="<iframe height='100%' width='100%' src='" + link + "' frameborder='0' allowfullscreen ></iframe>";
               }
-              
+
                 typesetting+='</div>';
              typesetting+='</div>';
         if(direct=="showbox")
@@ -591,10 +602,10 @@ function createcomment(comment,direct){
 
              typesetting+="</div>";
              //留言圖片
-             
+
          typesetting+="</div>";
          typesetting+="<div class='comm_three'>"
-         
+
              if(comment[a].imglistc){
                 var imglist=comment[a].imglistc.split(",");
                 typesetting+="<div class='comm_three_pic'>";
@@ -605,7 +616,7 @@ function createcomment(comment,direct){
                 typesetting+="</div>";
              }
              if(comment[a].code){
-                
+
                 typesetting+="<div class='comm_three_code'>";
                 typesetting+="<pre  class='prettyprint linenums'>";
                 typesetting+=comment[a].code;
@@ -640,7 +651,7 @@ function pushplus(){
 
 //以下都是(初始頁面的POSTING被按)時所用到的FUNCTION
 //都是根據POST ID 然後讀取出 POST 內容/POST 回覆
-//然後排版 
+//然後排版
 //詳細POSTING的內容-->---------
 //samchange2
 /*
@@ -676,7 +687,7 @@ function getcomment(postid){  //returncomment()
         }
     });
     return result;
-    
+
 }
 
 */
@@ -726,7 +737,7 @@ typesetting+='</div>';
 
     //增加VIEWCOUNT
     addviewcount(postid);
-    
+
 };
 
 function addviewcount(postid){
@@ -790,7 +801,7 @@ function uploadpost(d){
         type:'POST',
         success:function(data){
         },
-        error:function(data){ 
+        error:function(data){
             console.log("[main.js]function uploadpost 失敗");
         }
     });
@@ -810,12 +821,12 @@ function updatepost(d){
 			$('.dd').nestable('collapseAll');
 			console.log(data);
 			editpostdata[editpost]=data[0];
-			
-			//editpostdata.push(data[0]);	
+
+			//editpostdata.push(data[0]);
 			console.log(editpostdata);
-			
+
         },
-        error:function(data){ 
+        error:function(data){
             console.log("[main.js]function uploadpost 失敗");
         }
     });
@@ -832,9 +843,9 @@ function uploadpost(d){
 			createtag(gettag());
 			$('.dd').nestable('collapseAll');
 			socket.emit('uploadpost',d);
-				
+
         },
-        error:function(data){ 
+        error:function(data){
             console.log("[main.js]function uploadpost 失敗");
         }
     });
@@ -850,9 +861,9 @@ function uploadtag(wantaddtag){
 			$('#nestable').remove();
 			createtag(gettag());
 			$('.dd').nestable('collapseAll');
-				
+
         },
-        error:function(data){ 
+        error:function(data){
             console.log("[main.js]function uploadpost 失敗");
         }
 	 });
@@ -873,7 +884,7 @@ function lesstext (text){
     }
 }
 //文章內容縮小-----------------------------
-//上傳圖片之後 會在whichdiv 産生出一個小預覽圖-------------- 
+//上傳圖片之後 會在whichdiv 産生出一個小預覽圖--------------
 function previewimg(eventfile,whichdiv){
     var filelist=eventfile;
     var div="#"+whichdiv;
@@ -888,7 +899,7 @@ function previewimg(eventfile,whichdiv){
         }
     return filelist;
 };
-//上傳圖片之後 會在whichdiv 産生出一個小預覽圖-------------- 
+//上傳圖片之後 會在whichdiv 産生出一個小預覽圖--------------
 //取得當週增的TAG ---------
 function createoption(courseid){
     $.ajax({
@@ -898,7 +909,7 @@ function createoption(courseid){
         success:function(data){
             addoption(data);//取得當週的TAG 加進去發文OPTION 裡面
         },
-        error:function(data){ 
+        error:function(data){
             console.log("[main.js]function addpotion 失敗");
         }
     });
@@ -953,7 +964,7 @@ function tag_find(val){
         data:{val:val},
         success:function(data){
             $("#divshow").html("");
-            createposting (data,"append");//DIVSHOW 清空以後 把sql 抓出來的data重新印上divshow 
+            createposting (data,"append");//DIVSHOW 清空以後 把sql 抓出來的data重新印上divshow
         },
         error:function(data){console.log("tag_find 失敗");}
     });
@@ -995,7 +1006,7 @@ function live_create(data){  //1124
         typesetting+="<iframe class='live_video' width='150' height='130' src='https://www.youtube.com/embed/"+data[a].youtubeurl+"' frameborder='0' allowfullscreen ></iframe>";
     }
     $("#live_div").html(typesetting);
-    
+
 };
 function pretest_init(){
     $.ajax({
@@ -1023,11 +1034,11 @@ function pretest_create(data){
         typesetting+='<span class="pretest_a" style="">'+fn+'</span>'; //顯示檔名, 圖片不顯示檔名
         }
 
-        
+
         if(ft=="docx"||ft=="DOCX"||ft=="doc"||ft=="DOC"){
             typesetting+="<a href='/pretest/pretestdownload?fn="+fn+"'>";
             typesetting+="<div class='pretest_b pretest_img1 pretest_hov'>";
-            typesetting+="</div>"; 
+            typesetting+="</div>";
                         typesetting+="</a>";
 
         }
@@ -1050,7 +1061,7 @@ function pretest_create(data){
             typesetting+="<div class='pretest_b2 pretest_imgfunction' data-id="+data[a].id+">";
             typesetting+='<a class="single" href="/images/'+fn+'">';
             typesetting+="<img  class='' src='/images/"+pic+"' style='height:100%;width:100%' data-id="+data[a].id+"></a>";
-            typesetting+='</div>';  
+            typesetting+='</div>';
             typesetting+='<div id="prehid_'+data[a].id+'" class="pretest_a pretest_hiddenfn pretest_imgfunction"><span>'+fn+'</span></div>';
 
         }
@@ -1058,7 +1069,7 @@ function pretest_create(data){
           pic='';
           typesetting+="<a href='/pretest/pretestdownload?fn="+fn+"'>";
           typesetting+="<div class='pretest_b pretest_img4 pretest_hov'>";
-          typesetting+='</div>';  
+          typesetting+='</div>';
           typesetting+="</a>";
 
 
@@ -1073,7 +1084,7 @@ function pretest_create(data){
 
     }
     $("#pretest_div").append(typesetting);
-    
+
 };
 function inthreeday(date){
   var now=new Date();
@@ -1085,10 +1096,10 @@ function inthreeday(date){
     return false;
 
 }
-//> new 
+//> new
 
 function score(targetid,type,button){
-    
+
   $.ajax({
     url:'/routes/score/commconfirm',
     type:'post',
@@ -1123,7 +1134,7 @@ function score(targetid,type,button){
 
                 if(isNaN(mark))
                   mark=0;
-              
+
                 if(mark>0){
                   $('#c'+targetid).find('.comm_score').text("+"+mark).css("color","#49AAFE");
                   green.css({"background-color":"#3BFE5C","width":nice+"%"});
@@ -1165,7 +1176,7 @@ function pt_change(dom){
     $(".grid").html("");
     postingchange(dom);
   }
-  
+
 }
 function postingchange(type){
   $.ajax({
@@ -1174,7 +1185,7 @@ function postingchange(type){
     data:{type:type},
     success:function(data){
       console.log(data);
-      if(data.length!=0){  
+      if(data.length!=0){
         createposting(data,"append");
         gridlayout();
       }
@@ -1198,30 +1209,30 @@ $(function (){
 	shownotice();
     courseid=$('#hidden_data').data("courseid");
 	document.getElementById("texta").value="";
-	
+
 	//newsocket
 	socket.emit('joinroom',{'data':courseid});//使用者進入網頁時 把SOCKET加進ROOM裡面 以課號來區分ROOM
 
     socket.on('joined',function(data){//當有其他使用者進入相同ROOM,會APPEND以下面的P
       //$('.socketdiv').append("<p>使用者進入了ROOM:"+data.roomid+"</p>");
 	  //console.log('a');
-	  
+
     });
-	
+
 	socket.on('uploadpost',function(data){
 		console.log(data);
 		console.log(data.content);
-		
-        
+
+
         var newestId=getpostId();//取得當前最新POSTID +1
         data.Id=newestId;
         var tmp=new Array();
         tmp.push(data);
         console.log("新增一筆發文")
         $('#divshow').prepend(createposting(tmp,"prepend"));
-		
+
 	});
-	
+
     $('.socketbutton').click(function(){ //使用者發文時,告知SERVER 有發文
       socket.emit('c_send');
     });
@@ -1229,9 +1240,9 @@ $(function (){
     socket.on('s_send',function(data){  //SER 發出有其他使用者發文，作出相應動作顯示
       $('.socketdiv').append("<p>ROOM:"+data.data+"新文章</p>")
     });
-	
-	
-	
+
+
+
 //socketpart
 
 /*join room 例子
@@ -1249,7 +1260,7 @@ $(function (){
       $('.socketdiv').append("<p>ROOM:"+data.data+"新文章</p>")
     });
 join room 例子 */
-    
+
 	var clickslider=true;
 	//samchange1
 	 init(courseid);
@@ -1269,9 +1280,9 @@ join room 例子 */
 			$(".slider_scroll").animate( { left:'-'+w+'px' }, 600 ,'swing');
 			clickslider=true;
 		 }
-		
+
     });
-	
+
 	 getcoursename();   //samchange
     //當BOOTSTRAP 圖片輪播時 觸發MASONY 重新排版
     $(document.body).on('slid.bs.carousel', '.carousel',function () {
@@ -1313,7 +1324,7 @@ join room 例子 */
                 //判斷 抓出來的id  使用者 == 發文者 ?
                 if(typeof(user_postrecord[id])!="undefined")
                   return true;  //顯示 這個按鈕
-                else 
+                else
                   return false; //不顯示 這個按鈕
               }else if(type=="comm"){//comm選單情況
                 //抓出被點到的comm id 出來
@@ -1324,14 +1335,14 @@ join room 例子 */
                 else
                   return false;//不顯示 這個按鈕
               }
-			  
+
 
             },
             callback:function(itemKey,opt){
 				 var id;
 				 id=$(this).parents(".posting-one").data("postid").toString();
 				 modify(id);
-				
+
             }
           },
 
@@ -1348,7 +1359,7 @@ join room 例子 */
                 }
                 if(typeof(user_postrecord[id])!= "undefined")
                   return true;
-                else 
+                else
                   return false;
               }else if(type=="comm"){
                 var id=$(this).parents(".comm").data("commid").toString();
@@ -1386,7 +1397,7 @@ join room 例子 */
                   error:function(data){console.log("fail");}
                 });
               }
-              
+
             }
             },
           c:{
@@ -1395,11 +1406,11 @@ join room 例子 */
               return true;
               },
             callback:function(itemKey,opt){
-				
-				
+
+
 				var id;
 				id=$(this).parents(".posting-one").data("postid").toString();
-				
+
 				for(i in editpostdata){
 					if(editpostdata[i]!=undefined){
 						if(editpostdata[i].Id==id){
@@ -1408,7 +1419,7 @@ join room 例子 */
 					}
 				}
 				console.log(editpostdata[num]);
-				
+
 				$.ajax({
                   url:'/routes/reportpost',
                   data:editpostdata[num],
@@ -1419,10 +1430,10 @@ join room 例子 */
                   },
                   error:function(data){console.log("fail");}
                 });
-				
-				
-				
-				
+
+
+
+
 			}
           },
 
@@ -1452,12 +1463,12 @@ join room 例子 */
 					alert('這個tag已經存在了 不能在建');
 				}
 				else{
-				
+
 					uploadtag(wantaddtag);
 				}
 				return;
 			}
-       
+
         }
 		/*
 		if(!$('#post-title').val())
@@ -1475,7 +1486,7 @@ join room 例子 */
 		tag=tag.replace(/</g," &lt;");
 		tag=tag.replace(/>/g," &gt;");
 		var wantaddtag=checktag(tag);
-		
+
         var type=$('#posttype').val();
         var links="";
         var title=$("#post-title").val();
@@ -1506,9 +1517,9 @@ join room 例子 */
 
         };
 		var newestId=getpostId();//取得當前最新POSTID +1
-		
+
 		data.nextid=newestId+1;
-	
+
 		yourpost.push(newestId+1);
 		console.log(yourpost);
         if(title){
@@ -1519,7 +1530,7 @@ join room 例子 */
             for (var i =0;i<=filelist.length-1;i++){
                 imglist+=filelist[i].name+",";
             }
-            
+
             data.imglist=imglist;
         }
 
@@ -1540,22 +1551,22 @@ join room 例子 */
             data.anonymous=$("#name2").val();
 
 		if(editpost=='false'){
-			uploadpost(data);//將發文全部資料傳給伺服器，讓資料.圖片.影片.CODE存入SQL 
+			uploadpost(data);//將發文全部資料傳給伺服器，讓資料.圖片.影片.CODE存入SQL
 		}
 		else{
 			data.Id=editpostdata[editpost].Id;
-			
+
 			$('#p'+editpostdata[editpost].Id).remove();
 			updatepost(data);
 		}
-		
-        //uploadpost(data);//將發文全部資料傳給伺服器，讓資料.圖片.影片.CODE存入SQL 
 
-        if(filelist!=""){   
+        //uploadpost(data);//將發文全部資料傳給伺服器，讓資料.圖片.影片.CODE存入SQL
+
+        if(filelist!=""){
             $.uploadfile(filelist);
         }
-		
-       
+
+
         data.Id=newestId+1;
         var tmp=new Array();
         tmp.push(data);
@@ -1612,7 +1623,7 @@ join room 例子 */
         var val=$(this).html();
         tag_find(val);
     });
-            
+
 
 /*
     socket.on('serversend', function (data) {
@@ -1639,7 +1650,7 @@ join room 例子 */
         $("#new_post_preimg").css("display","block");
         //Filelist Object
         filelist = event.target.files;
-        
+
         for (var i = 0; i < filelist.length; i++) {
             var file = filelist[i]
             var reader = new FileReader();
@@ -1649,7 +1660,7 @@ join room 例子 */
             reader.readAsDataURL(file);
         }
     });
-    
+
 
     //上傳圖片預覽<-----------------------------------------------------
     //圖片按下後反應-->-----------------------------------------------------------
@@ -1677,7 +1688,7 @@ join room 例子 */
             //將檔案加進FormData
 
             if (filelist[i]['type'] == 'image/jpeg' || filelist[i]['type'] == 'image/png' || filelist[i]['type'] == 'image/gif') {
-                
+
                 $.ajax({
                     url: '/routes/upload',
                     data: formData,
@@ -1687,7 +1698,7 @@ join room 例子 */
                     async: false,
                     type: 'POST',
                     success: function (data) {
-                        
+
                         var name = $('#name').val();
                         socket.emit('client_send_img', {
                             'name': name,
@@ -1707,9 +1718,9 @@ join room 例子 */
         typesetting+="</div>";
         return typesetting;
     }
-    
-    
-    
+
+
+
     $.uploadcommentfile = function (filelist) {  //和uploadfile基本一樣 只是改了url的路徑而已
         for (var i = 0; i < filelist.length; i++) {
             var file = filelist[i];
@@ -1720,7 +1731,7 @@ join room 例子 */
             //將檔案加進FormData
 
             if (filelist[i]['type'] == 'image/jpeg' || filelist[i]['type'] == 'image/png' || filelist[i]['type'] == 'image/gif') {
-                
+
                 $.ajax({
                     url: '/routes/uploadc',
                     data: formData,
@@ -1732,17 +1743,17 @@ join room 例子 */
                     success: function (data) {
                     }
                 });
-            
+
             }
             else {
                 $('#divshow').append('<div><p>這個檔案不是JPEG/PNG/GIF</p></div>');
             }
         }
         return "";
-        
+
     }
-    
-    
+
+
     //圖片拖拉功能-------------------------------------------------------------------
     function drag(ev) {
         ev.preventDefault();
@@ -1834,10 +1845,10 @@ join room 例子 */
         var comment=getcomment(postid);//根據POST ID 取得COMMENT
         createfullpost(post,comment);//顯示POST 內容 和 COMMENT 內容 和增加VIEWCOUNT 數字
 
-        
+
         //console.log("post data",post);
         //console.log("comment data",comment);
-        
+
     });
     $("#post_open_x").click(function(){
          $("#post_open_div").css('opacity', 1).slideUp('slow').animate({ opacity: 0 },{ queue: false, duration: 'slow' });
@@ -1874,7 +1885,7 @@ join room 例子 */
         var a=$("#divshow").find(".grid-item").last().data("postid");
         var type=$(this).data("type");
         moreposting(type,a);
-        
+
     });
     //更多文章按鈕<--------------------------------------
     //文章內容更多按鈕-->-------------------------------
@@ -1890,19 +1901,19 @@ join room 例子 */
     $(document.body).on('change','#comm_upload_img',function(event){
       var filelist = event.target.files;
       previewimg(filelist,"comm_previewimg_div");
-      
+
     });
     $(document.body).on('click','#teest',function(event){
       if(filelist.length!=0)
         console.log(filelist);
       else
         console.log("no img");
-      
+
     });
 
   $(document.body).on('mouseenter',".pretest_imgfunction",function(event){
     var id=$(this).data().id;
-    
+
     setTimeout(function(){
     $('#prehid_'+id).fadeIn();
 
@@ -1912,7 +1923,7 @@ join room 例子 */
 
     },4000);
   });
-  
+
   $(document).on("click", "#live_btn", function(e) {
   var tmp='<div><input type="text" id="live_input" size="36" placeholder="Youtube url" value="https://youtu.be/MuK6Bnidl6I">\
             </div>';

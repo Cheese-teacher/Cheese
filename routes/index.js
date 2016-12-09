@@ -12,6 +12,7 @@ var multer = require('multer'); // v1.0.5
 var upload = multer(); // for parsing multipart/form-data
 var async= require('async'); //samchange1
 var config = require("../lib/config.js");
+var cors = require('cors');
 router.use(bodyParser.json()); // for parsing application/json
 router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -30,44 +31,47 @@ var io_Chatroom = {
     startConnection:startConnection
 };
 
+
+router.use(cors());
+
 var room;
 //samchange2
 function startConnection(socket){
-	
+
 	socket.on('joinroom',function(data){
-		
+
 		socket.join(data.data);
 		socket['room']=data.data;//這個變數很重要,是分ROOM的標準(拿課號)，拿來TO/LEAVE的時候備用
 		//socket.to(data.data).emit('joined',{roomid:data.data});
 		socket.broadcast.to(socket['room']).emit('joined',{roomid:data.data});
 	});
-	
+
 	socket.on('uploadpost',function(data){
 		socket.broadcast.to(socket['room']).emit('uploadpost',data);
-		
+
 	});
-	
-	
-	
-	
+
+
+
+
 	socket.on('insertcomment',function(data,postid,courseid){
-		
-		
+
+
 		console.log(postid);
 		socket.broadcast.emit('insertcomment',data,postid,courseid);
-		
+
 	});
-	
-	
+
+
 	socket.on('c_send',function(data){
 		socket.emit('s_send',{data:socket['room']});
 		socket.broadcast.to(socket['room']).emit('s_send',{data:socket['room']});
 	});
-	
+
 	socket.on('disconnect',function(a){
 		socket.leave(socket['room']);
 	});
-	
+
 	/*join room 例子
 	socket.on('joinroom',function(data){
 		socket.join(data.data);
@@ -84,7 +88,7 @@ function startConnection(socket){
 		socket.leave(socket['room']);
 	});
 	join room 例子*/
-	
+
 /*
   socket.emit('someone_login',{'number':onlineCount});
   console.log('有人加入了聊天室');
@@ -99,7 +103,7 @@ function startConnection(socket){
       */
 };
 
-  
+
 /*
   //test if socket still exist connection
   socket.on('but', function(msg) {
@@ -120,8 +124,27 @@ function startConnection(socket){
 
 
 router.get('/', function(req, res, next) {
-	
+
     res.redirect('http://localhost:3000/routes/course/');
+});
+
+router.post('/getNote',function(req, res){
+	var classid = req.body.classid;
+    var sql = 'select shortid from Notes where class = "' + classid + '" ';
+    connection.query(sql ,function(err,result){
+		if(err){
+			console.log(err);
+            console.log(sql);
+		}else{
+            if(result.length == 0) {
+                var url = 'http://localhost:3000/';
+            }else {
+                var url = 'http://localhost:3000/'+ result[0].shortid;
+            }
+            res.send(url);
+		}
+	});
+    //res.render('/routes/course/index2',{ courseid: req.session.courseid });
 });
 
 router.post('/setsession', upload.array(),function(req, res , next){
@@ -129,13 +152,12 @@ router.post('/setsession', upload.array(),function(req, res , next){
 	req.session.courseid=classid;
 	var departmentid=req.body.departmentid;
 	req.session.departmentid=departmentid;
-
 	res.end();
 });
 
 router.get('/course/', function(req, res, next) {
 	if(!req.session.courseid&&!req.session.departmentid)
-	{	
+	{
 		res.redirect('http://localhost:3000/routes');
 	}
 	else{
@@ -143,13 +165,13 @@ router.get('/course/', function(req, res, next) {
 
 		res.render('./views/index2', {courseid:req.session.courseid});
 	}
-    
+
 });
 
 
 
 router.post('/deletecomment', upload.array(),function(req, res , next){
-	var commentid=req.body.data;	
+	var commentid=req.body.data;
 	connection.query('delete from comment where Id= ' +commentid+ '' ,function(err,result){
 		if(err){
 			console.log(err);
@@ -158,7 +180,7 @@ router.post('/deletecomment', upload.array(),function(req, res , next){
 		}
 	});
 
-	
+
 });
 
 router.post('/showcomment', upload.array(),function(req, res , next){
@@ -167,22 +189,22 @@ router.post('/showcomment', upload.array(),function(req, res , next){
 		//檢查是否有錯誤
 		if(error){
 			throw error;
-		}	
+		}
 		res.send(rows);
 	});
-	
+
 });
 
 router.post('/insertcomment', upload.array(),function(req, res , next){
 	var comment=req.body.data;
-	
+
 	var courseid=req.session.courseid;
 	var postid=req.body.postid;
 	var anonymous=req.body.anonymous;
-	
+
 	var imglist=req.body.imglist;
 	var code=req.body.code;
-	
+
 	var commentcontain=new Object();
 	commentcontain.postId=postid;
 	commentcontain.content=comment;
@@ -195,12 +217,12 @@ router.post('/insertcomment', upload.array(),function(req, res , next){
 	var posttitle;
 	var commentonwer=new Array();
 	var postowner;
-	
+
 	var d=new Date();
     var mon=d.getMonth()+1;
     var now=d.getFullYear()+"-"+mon+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
 	commentcontain.cdate=now;
-	
+
 	async.series([
 		function hehe(callback){
 			var sql='SELECT Owner FROM posting where Id="'+postid+'"';
@@ -216,11 +238,11 @@ router.post('/insertcomment', upload.array(),function(req, res , next){
 					}
 				}
 				else{
-					
+
 				}
 			});
 		},
-		
+
 		function hehe(callback){
 			var sql='SELECT owner FROM comment where postid = "'+postid+'"';
 			connection.query(sql, function(err, rows, fields){
@@ -238,7 +260,7 @@ router.post('/insertcomment', upload.array(),function(req, res , next){
 							 }
 							 if(commentonwer.length==0){
 								 console.log('nooooooooooo');
-								
+
 								 commentonwer.push(rows[c].owner);
 							 }
 							for(j in commentonwer){
@@ -249,47 +271,47 @@ router.post('/insertcomment', upload.array(),function(req, res , next){
 							}
 							if(repeat==false){
 								commentonwer.push(rows[i].owner);
-								
+
 							}
 						}
-						
+
 						console.log('我問你是誰！！！！！！！');
-						
+
 						callback();
 					}
 				}
 				else{
 					callback();
-					
+
 				}
 
 			});
-			
+
 		},
-		
-		
+
+
 		function hehe(callback){
 			console.log(commentonwer);
 			//var sql='DELETE from notice WHERE postid="'+postid+'"';
 			connection.query('DELETE from notice WHERE postid="'+postid+'"', function(err, result) {
 				if(!err){
-					callback();	
+					callback();
 				}
 				else{
-					callback();	
+					callback();
 				}
-		
+
 			});
-			
+
 		},
-		
+
 		function hehe(callback){
 			var sql='SELECT posting.title,class.Classname from posting , class WHERE posting.Id="'+postid+'" AND class.Class="'+courseid+'"';
 				connection.query(sql, function(err, rows, fields){
 					if(!err){
 						posttitle=rows[0].title;
 						Classname=rows[0].Classname;
-						
+
 						callback();
 					}
 					else{
@@ -299,7 +321,7 @@ router.post('/insertcomment', upload.array(),function(req, res , next){
 
 				});
 		},
-		
+
 		function hehe(callback){
 			console.log('BELLO!!!!!!!!!!!');
 			if(postowner==undefined){
@@ -318,11 +340,11 @@ router.post('/insertcomment', upload.array(),function(req, res , next){
 					else{
 						callback();
 					}
-			
+
 				});
 			}
 		},
-		
+
 		function hehe(callback){
 			if(commentonwer.length==0)
 			{
@@ -342,18 +364,18 @@ router.post('/insertcomment', upload.array(),function(req, res , next){
 						else{
 							callback();
 						}
-				
+
 					});
 				}
 			}
 		}
-		
+
 	],
 	function(err) {
 		connection.query('INSERT INTO comment SET ?', commentcontain, function(err, result) {
 			if(!err){
-				
-				
+
+
 				commentcontain.Id=result.insertId;
 				if(req.session.commentid==undefined){
 					var pi=new Array();
@@ -371,14 +393,14 @@ router.post('/insertcomment', upload.array(),function(req, res , next){
 				console.log(err);
 				console.log(' 新增comment失敗');
 			}
-			
+
 		});
-		
-					  
+
+
 	});
 
-	
-	
+
+
 
 });
 //new
@@ -387,7 +409,7 @@ router.post('/insertcomment', upload.array(),function(req, res , next){
 
 
 router.get('/init/',function(req,res){//初始化，讀取courseid=? 的文章
-	
+
 	console.log("正在讀取 courseId:",req.session.courseid,"文章");
 	//var sql='SELECT  * from posting  WHERE courseId= "'+req.session.courseid+'" ORDER BY date DESC Limit 10';
 	var sql="SELECT count(comment.postId) as coun,posting.* FROM posting left join comment\
@@ -402,11 +424,11 @@ router.get('/init/',function(req,res){//初始化，讀取courseid=? 的文章
 		}
 		else
 			console.log(err);
-		
+
 	});
-	
-	
-	
+
+
+
 });
 
 router.post('/getpost/',function(req,res){//讀取文章資料
@@ -454,7 +476,7 @@ router.post('/uploadvideo',function(req,res){
 		file.name=num+"."+type;
 		file.path=path.join(__dirname, '../public/video/'+file.name);
 		num++;
-		
+
 		console.log(file);
 	});
 	res.end(num.toString());
@@ -537,12 +559,12 @@ router.post('/pretestupload',function(req,res){
 		console.log(file.name);
 		file.path=path.join(__dirname, '../public/images/'+file.name);
 	});
-	
+
 	form.parse(req,function(err,fields,files){
 		//console.log("fields:",fields.file);
 		filelist+="]";
 		res.json(filelist);
-	});		
+	});
 
 });
 router.get('/pretestdownload',function(req,res){
@@ -563,7 +585,7 @@ router.post('/uploadpost',upload.array(),function(req,res){//發表新文章
 	po.code="<script></script>";
 	*/
 	//發文DATA
-	
+
 	var postcontain=new Object();
 	postcontain.tag=req.body.tag; //samchange1
 	var w=req.body.w;
@@ -608,9 +630,9 @@ router.post('/uploadpost',upload.array(),function(req,res){//發表新文章
 				callback();
 				console.log(err);
 			}
-			
+
 		});
-		
+
 	}
 	],
 	function(err) {
@@ -619,26 +641,26 @@ router.post('/uploadpost',upload.array(),function(req,res){//發表新文章
 		if(w!=''){
 			var insert=w.split(',');
 			var tagcontain=new Object();
-			
-			
+
+
 			tagcontain.courseid=req.session.courseid;
 			var d=new Date();
 			var mon=d.getMonth()+1;
 			var now=d.getFullYear()+"-"+mon+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
 			tagcontain.date=now;
 			tagcontain.parentTag=null;
-			
+
 			for(var i=0;i<insert.length-1;i++){
 				tagcontain.tag=insert[i];
-				console.log(tagcontain);	
+				console.log(tagcontain);
 				connection.query('INSERT INTO tag SET ?', tagcontain, function(err, result) {
 					if(!err){
-						
+
 					}
 					else{
-						
+
 						console.log(err);
-						
+
 					}
 				});
 			}
@@ -672,7 +694,7 @@ router.post("/more/",function(req,res){//按下最新/熱門button  and  按下�
 	order by date desc limit 10;";
 
 	}
-	
+
 	connection.query(sql,function(err, rows, fields){
 		if(!err){
 			res.send(rows);
@@ -682,7 +704,7 @@ router.post("/more/",function(req,res){//按下最新/熱門button  and  按下�
 			console.log(sql);
 			console.log(err);
 		}
-		
+
 	});
 });
 router.post("/find/tag",function(req,res){
@@ -693,7 +715,7 @@ router.post("/find/tag",function(req,res){
 		}
 		else
 			console.log(err);
-		
+
 	});
 
 });
@@ -718,7 +740,7 @@ router.post("/live/insert",function(req,res){
 });
 
 router.get("/live/init",function(req,res){
-	
+
 	connection.query('SELECT  * from live  WHERE course="'+req.session.courseid+'"  ORDER BY date DESC limit 6', function(err, rows, fields){
 		if(!err){
 			res.send(rows);
@@ -726,7 +748,7 @@ router.get("/live/init",function(req,res){
 		}
 		else
 			console.log(err);
-		
+
 	});
 
 });
@@ -738,7 +760,7 @@ router.get("/pretest/init",function(req,res){
 		}
 		else
 			console.log(err);
-		
+
 	});
 
 });
@@ -746,7 +768,7 @@ router.get("/pretest/init",function(req,res){
 
 
 
-	
+
 //>new
 router.post("/addviewcount",function(req,res){
 	var sql="UPDATE posting SET viewcount = viewcount + 1 WHERE Id='"+req.body.postid+"'";
@@ -793,7 +815,7 @@ router.post('/score/commconfirm',function (req,res){
 		nb="bad";
 		$nb="nice";
 	}
-	
+
 	var sql="SELECT * FROM score WHERE user='"+sqluser+"' AND type='"+sqltype+"' AND targetid='"+sqltargetid+"'";
 	connection.query(sql,function(err,result){//先去SQL 看USER 之前有沒有按過NICE/BAD
 		if(!err){
@@ -847,7 +869,7 @@ router.post('/score/commconfirm',function (req,res){
 			console.log("ERR");
 			console.log(err);
 		}
-		
+
 
 	});
 });
@@ -859,7 +881,7 @@ router.post("/getcommentbyid",function(req,res){
 		if(error){
 			console.log(sql);
 			throw error;
-		}	
+		}
 		res.send(rows);
 	});
 });
@@ -880,7 +902,7 @@ router.post("/postchange",function(req,res){
 	group by posting.Id\
 	HAVING count(comment.postId) > 5\
 	order by date desc limit 10;";
-	
+
 	}
 
 	connection.query(sql, function(err, rows, fields){
@@ -891,7 +913,7 @@ router.post("/postchange",function(req,res){
 			console.log(sql);
 			console.log(err);
 		}
-		
+
 	});
 
 });
@@ -899,7 +921,7 @@ router.post("/record",function(req,res){
 	var type=req.body.type;
 	if(type=="p"){
 		var sql="select Id FROM posting WHERE Owner='"+req.session.passport.user+"' AND courseId='"+req.session.courseid+"'";
-		
+
 	}else if(type=="c"){
 		var sql="SELECT posting.courseId,comment.Id,comment.owner FROM comment,posting WHERE comment.postId=posting.Id \
 		AND comment.owner='"+req.session.passport.user+"' AND posting.courseId='"+req.session.courseid+"'";
@@ -914,8 +936,8 @@ router.post("/record",function(req,res){
 
 })
 router.post('/delete/post',function(req,res){
-	var id=req.body.id;	
-	
+	var id=req.body.id;
+
 	id=id.replace('p','');
 	var sql='delete from posting where Id="'+id+'"' ;
 	connection.query(sql,function(err,result){
@@ -933,9 +955,9 @@ router.post('/delete/post',function(req,res){
 router.post("/updatetag",function(req,res){
 	var resettag=req.body.resettag;
 	console.log(resettag);
-	
+
 	async.series([
-	
+
 	function hehe(callback){
 		connection.query('DELETE  from tag  WHERE courseid="'+req.session.courseid+'"', function(err, rows, fields){
 			if(!err){
@@ -946,7 +968,7 @@ router.post("/updatetag",function(req,res){
 			}
 		});
 	},
-	
+
 	function hehe(callback){
 		for(var i in resettag){
 			var tagcontain=new Object();
@@ -960,29 +982,29 @@ router.post("/updatetag",function(req,res){
 			tagcontain.parentTag=resettag[i].parentid;
 			if(tagcontain.parentTag=='')
 				tagcontain.parentTag=null;
-			
+
 			connection.query('INSERT INTO tag SET ?', tagcontain, function(err, result) {
 			if(!err){
-				
+
 			}
 			else{
 				console.log(err);
 			}
 			});
 		}
-		
-		
-		
+
+
+
 		callback();
 	}
-	
+
 	],
 	function(err) {
 			console.log('success');
 			res.end();
-			  
+
 	});
-	
+
 });
 
 
@@ -991,7 +1013,7 @@ router.post("/deletetag",function(req,res){
 	console.log("tag:"+tag);
 	var selectresult=true;
 	var splittag=new Array();
-	
+
 	async.series([
 		function hehe(callback){
 			connection.query('SELECT  * from posting  WHERE courseId="'+req.session.courseid+'"AND tag LIKE "%'+tag+'%"', function(err, rows, fields){
@@ -1004,7 +1026,7 @@ router.post("/deletetag",function(req,res){
 									}
 								}
 							}
-							
+
 							callback();
 						}
 						else{
@@ -1013,7 +1035,7 @@ router.post("/deletetag",function(req,res){
 						}
 			});
 		}
-	
+
 	],
 	function(err) {
 		if(selectresult==true){
@@ -1031,12 +1053,12 @@ router.post("/deletetag",function(req,res){
 			res.send('這個tag有文章在使用 不能刪除');
 		}
 	});
-	
-	
+
+
 });
 
 router.post("/valuetagsearch",function(req,res){
-	
+
 	var textarray=req.body.textarray;
 	var searcharray=req.body.searcharray;
 	console.log(searcharray);
@@ -1049,7 +1071,7 @@ router.post("/valuetagsearch",function(req,res){
 	var finalpretest=new Object();
 	async.series([
 		function hehe(callback){
-			
+
 			for(i in textarray){
 				if(textarray[i].parentid=='')
 					textarray[i].parentid=null;
@@ -1066,15 +1088,15 @@ router.post("/valuetagsearch",function(req,res){
 					}
 					for(j in textarray){
 						if(searcharray[i]==textarray[j].tag){
-							
+
 							parentid[countparent]=textarray[j].id;
 							countparent++;
 						}
-					
+
 					}
-				
+
 				}
-				
+
 			}
 			for(var i = 0 ;i<countparent;i++){
 				for(j in textarray){
@@ -1086,13 +1108,13 @@ router.post("/valuetagsearch",function(req,res){
 					}
 				}
 			}
-			
-			
-			
+
+
+
 			callback();
 		},
 		function hehe(callback){
-			
+
 			connection.query('SELECT  * from pretest  WHERE courseId="'+req.session.courseid+'" AND ('+sqlselect+')', function(err, rows, fields){
 						if(!err){
 							console.log(rows);
@@ -1108,19 +1130,19 @@ router.post("/valuetagsearch",function(req,res){
 												count++;
 												jump=false;
 												break;
-												
+
 											}
-											
+
 										}
 										if(jump==false){
 												jump=true;
 												break;
-												
+
 										}
 									}
-									
+
 							}
-							
+
 							req.session.pretestresult=finalpretest;
 							console.log(req.session);
 							callback();
@@ -1130,8 +1152,8 @@ router.post("/valuetagsearch",function(req,res){
 							callback();
 						}
 					});
-			
-			
+
+
 		}
 	],
 	function(err) {
@@ -1158,7 +1180,7 @@ router.post("/valuetagsearch",function(req,res){
 										finalrows[count]=rows[i];
 										count++;
 									}
-										
+
 								}
 								*/
 									for(k in posttag){
@@ -1169,19 +1191,19 @@ router.post("/valuetagsearch",function(req,res){
 												count++;
 												jump=false;
 												break;
-												
+
 											}
-											
+
 										}
 										if(jump==false){
 												jump=true;
 												break;
-												
+
 										}
 									}
-									
+
 							}
-							
+
 							req.session.postresult=finalrows;
 							console.log(req.session);
 							res.end();
@@ -1191,9 +1213,9 @@ router.post("/valuetagsearch",function(req,res){
 							res.end();
 						}
 					});
-			  
-		
-			  
+
+
+
 	});
 });
 
@@ -1207,7 +1229,7 @@ router.post("/addtag",function(req,res){
 	var now=d.getFullYear()+"-"+mon+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
 	tagcontain.date=now;
 	tagcontain.parentTag=null;
-	
+
 	async.series([
 		function hehe(callback){
 			var insert=tag.split(',');
@@ -1215,12 +1237,12 @@ router.post("/addtag",function(req,res){
 				tagcontain.tag=insert[i];
 				connection.query('INSERT INTO tag SET ?', tagcontain, function(err, result) {
 					if(!err){
-						
+
 					}
 					else{
-						
+
 						console.log(err);
-						
+
 					}
 				});
 			}
@@ -1230,12 +1252,12 @@ router.post("/addtag",function(req,res){
 	function(err) {
 			console.log('success');
 			res.end();
-			  
+
 	});
-	
+
 	res.end();
-	
-	
+
+
 });
 
 
@@ -1253,9 +1275,9 @@ router.post('/updatepost',upload.array(),function(req,res){//編輯文章
 	*/
 	//發文DATA
 	var postcontain=new Object();
-	
+
 	var r;
-	
+
 	postcontain.type=req.body.type;
 	postcontain.tag=req.body.tag; //samchange1
 	//console.log('tagggg'+req.body.w);
@@ -1263,7 +1285,7 @@ router.post('/updatepost',upload.array(),function(req,res){//編輯文章
 	console.log('tagggg'+w);
 	if(req.body.content!=null)
 		postcontain.content=req.body.content;
-	
+
 	var d=new Date();
     var mon=d.getMonth()+1;
     var now=d.getFullYear()+"-"+mon+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
@@ -1272,12 +1294,12 @@ router.post('/updatepost',upload.array(),function(req,res){//編輯文章
 		postcontain.title=req.body.title;
 	else
 		postcontain.title="";
-	
+
 	if(req.body.youtubeLink!=undefined)
 		postcontain.youtubeLink=req.body.youtubeLink;
 	if(req.body.code!=undefined)
 		postcontain.code=req.body.code;
-	
+
 	//console.log(postcontain);
 	//INSERT 發文資料
 	async.series([
@@ -1292,11 +1314,11 @@ router.post('/updatepost',upload.array(),function(req,res){//編輯文章
 				console.log(err);
 				console.log("使用者ffffffffffffffffffffffffffffff");
 				callback();
-				
+
 			}
-			
+
 		});
-		
+
 	},
 	function hehe(callback){
 		connection.query('SELECT  * from posting where id = "'+req.body.Id+'"',function(err, rows, fields) {
@@ -1311,38 +1333,38 @@ router.post('/updatepost',upload.array(),function(req,res){//編輯文章
 				console.log(err);
 				console.log("使用者ffffffffffffffffffffffffffffff");
 				callback();
-				
+
 			}
-			
+
 		});
 	}
-	
-	
+
+
 	],
 	function(err) {
 		console.log(w);
 		if(w!=''){
 			var insert=w.split(',');
 			var tagcontain=new Object();
-			
-			
+
+
 			tagcontain.courseid=req.session.courseid;
 			var d=new Date();
 			var mon=d.getMonth()+1;
 			var now=d.getFullYear()+"-"+mon+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
 			tagcontain.date=now;
 			tagcontain.parentTag=null;
-			
+
 			for(var i=0;i<insert.length-1;i++){
 				tagcontain.tag=insert[i];
 				connection.query('INSERT INTO tag SET ?', tagcontain, function(err, result) {
 					if(!err){
-						
+
 					}
 					else{
-						
+
 						console.log(err);
-						
+
 					}
 				});
 			}
@@ -1359,21 +1381,21 @@ router.post('/updatepost',upload.array(),function(req,res){//編輯文章
 
 
 router.post('/reportpost',upload.array(),function(req,res){//編輯文章
-	
+
 	var postcontain=new Object();
-	
-	
-	
+
+
+
 	postcontain.postid=req.body.Id;
 	postcontain.Owner=req.body.Owner;
-	
+
 	postcontain.tag=req.body.tag; //samchange1
 	//console.log('tagggg'+req.body.w);
-	
+
 	postcontain.reporter=req.session.passport.user;
 	if(req.body.content!=null)
 		postcontain.content=req.body.content;
-	
+
 	var d=new Date();
     var mon=d.getMonth()+1;
     var now=d.getFullYear()+"-"+mon+"-"+d.getDate()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
@@ -1382,7 +1404,7 @@ router.post('/reportpost',upload.array(),function(req,res){//編輯文章
 		postcontain.title=req.body.title;
 	else
 		postcontain.title="";
-	
+
 	if(req.body.youtubeLink!=undefined)
 		postcontain.youtube=req.body.youtubeLink;
 	if(req.body.code!=undefined)
@@ -1392,10 +1414,10 @@ router.post('/reportpost',upload.array(),function(req,res){//編輯文章
 	console.log(postcontain);
 	res.end();
 	//INSERT 發文資料
-	
-	
+
+
 		connection.query('INSERT postreport SET ? ', postcontain,function(err, result) {
-		
+
 			if(!err){
 				res.end();
 			}
@@ -1403,11 +1425,11 @@ router.post('/reportpost',upload.array(),function(req,res){//編輯文章
 				console.log(err);
 				res.end()
 			}
-			
+
 		});
-		
-	
-	
+
+
+
 });
 
 //samchanege2
@@ -1418,22 +1440,22 @@ router.post('/getyourpostid/',function(req,res){//讀取文章資料
 	var postid=new Array();
 	connection.query(sql, function(err, rows, fields){
 		if(!err){
-			
+
 			if(rows.length>0){
-				
+
 				for(i in rows){
 					postid.push(rows[i].Id)
 				}
-					
+
 				req.session.postid=postid;
-				
+
 			}
 			else{
 				var a=new Array();
 				a.push('sss');
 				req.session.postid=a;
 			}
-			
+
 			res.end();
 		}
 		else{
@@ -1447,15 +1469,15 @@ router.post('/getyourpostid/',function(req,res){//讀取文章資料
 
 
 router.post('/getyourcommentid/',function(req,res){//讀取文章資料
-		
+
 	var sql='SELECT postId from comment  WHERE owner="'+req.session.passport.user+'"';
 	var commentid=new Array();
 	var repeat=false;
 	connection.query(sql, function(err, rows, fields){
 		if(!err){
-			
-			
-			
+
+
+
 			if(rows.length>0){
 				commentid.push(rows[0].postId);
 				for(i in rows){
@@ -1468,18 +1490,18 @@ router.post('/getyourcommentid/',function(req,res){//讀取文章資料
 					}
 					if(repeat==false)
 						commentid.push(rows[i].postId);
-					
+
 				}
 				req.session.commentid=commentid;
 			}
 			else{
 				var a=new Array();
 				a.push('sss');
-				
+
 				req.session.commentid=a;
 			}
-			
-			
+
+
 			res.end();
 		}
 		else{
@@ -1489,14 +1511,14 @@ router.post('/getyourcommentid/',function(req,res){//讀取文章資料
 		}
 
 	});
-	
-	
+
+
 });
 
 
 
 router.post('/retursessioncommentid/',function(req,res){//讀取文章資料
-	
+
 	res.send(req.session.commentid);
 });
 
@@ -1504,7 +1526,7 @@ router.post('/retursessioncommentid/',function(req,res){//讀取文章資料
 
 
 router.post('/retursessionpostid/',function(req,res){//讀取文章資料
-	
+
 	res.send(req.session.postid);
 });
 
@@ -1528,22 +1550,22 @@ router.post('/getposttitle/',function(req,res){//讀取文章資料
 					callback();
 				}
 				else{
-					
+
 					callback();
 				}
 
 			});
 		},
 		function hehe(callback){
-			
+
 			for(i in checkid){
 				if(postid==checkid[i]){
 					check=false;
 					break;
 				}
 			}
-			
-			
+
+
 				var sql='SELECT posting.title,class.Classname from posting , class WHERE posting.Id="'+postid+'" AND class.Class="'+courseid+'"';
 				connection.query(sql, function(err, rows, fields){
 					if(!err){
@@ -1563,7 +1585,7 @@ router.post('/getposttitle/',function(req,res){//讀取文章資料
 					}
 
 				});
-			
+
 		}
 		,
 		function hehe(callback){
@@ -1574,15 +1596,15 @@ router.post('/getposttitle/',function(req,res){//讀取文章資料
 			if(check==false){
 				connection.query('DELETE from notice WHERE postid="'+postid+'"', function(err, result) {
 					if(!err){
-						
+
 					}
 					else{
-						
+
 					}
-		
+
 				});
 			}
-				
+
 			connection.query('INSERT INTO notice SET ?', notice, function(err, result) {
 				if(!err){
 					callback()
@@ -1590,20 +1612,20 @@ router.post('/getposttitle/',function(req,res){//讀取文章資料
 				else{
 					callback();
 				}
-		
+
 			});
 		}
-		
+
 	],
 	function(err) {
 		back.postid=postid;
 		back.msg=msg;
 			console.log(back);
 			res.send(back);
-			  
+
 	});
-	
-	
+
+
 })
 */
 router.post('/shownotice/',function(req,res){//讀取文章資料
@@ -1613,10 +1635,10 @@ router.post('/shownotice/',function(req,res){//讀取文章資料
 					res.send(rows)
 				}
 				else{
-					
+
 					console.log(err);
 					res.end();
-					
+
 				}
 
 			});
@@ -1627,10 +1649,10 @@ router.post('/shownotice/',function(req,res){//讀取文章資料
 router.post('/deletenotice/',function(req,res){//讀取文章資料
 	connection.query('DELETE from notice WHERE postid="'+req.body.postid+'"', function(err, result) {
 		if(!err){
-			res.end();	
+			res.end();
 		}
 		else{
-			res.end();		
+			res.end();
 		}
 	});
 
